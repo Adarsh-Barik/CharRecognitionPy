@@ -2,5 +2,6 @@
 !/data/trainResized
 !/data/trainResizedKeys
 !/data/storage
+/data/storage/alldescriptors.txt
 SIFTDemo
 *.pyc
