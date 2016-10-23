@@ -1,3 +1,6 @@
-Data
+data
+!data/trainResized
+!data/trainResizedKeys
+!data/storage
 SIFTDemo
 *.pyc
