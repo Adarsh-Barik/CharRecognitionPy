@@ -37,6 +37,7 @@ def bmp_to_key(imagename, outkey):
     print "generated", outkey
 
 def key_to_descriptor_array(keyfile):
+    """ changes keys to an array """
     if not path.exists(keyfile):
         print "Key file doesn't exist."
         sys.exit()
