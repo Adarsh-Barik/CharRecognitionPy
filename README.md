@@ -5,6 +5,6 @@ alldescriptors.txt is a large file (~105 MB) hence I have compressed it in allde
 ## Plan
 - [x] Getting SIFT descriptors from image files
 - [x] Generating bag of words 
-- [ ] Generating training vectors using K-means clustering
+- [x] Generating training vectors using K-means clustering
 - [ ] Implementing SVM and variants for classification
 - [ ] Test results
