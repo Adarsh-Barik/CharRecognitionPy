@@ -88,6 +88,8 @@ if imageclass != 0:
 	np.savetxt("../data/storage/image_class.txt", image_class,)
 else:
 	image_class = np.genfromtxt("../data/storage/imagename_vector.txt")
+	for i in range(len(image_class)):
+		image_class[i] = ord(image_class[i])
 
 # generating vector for svm
 vectorarray = 1
