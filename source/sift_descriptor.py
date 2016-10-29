@@ -5,7 +5,8 @@ Python module for use with David Lowe's SIFT code available at:
 Also thanks to http://www.maths.lth.se/matematiklth/personal/solem/downloads/sift.py
 author: adarsh
 """
-
+import os
+import subprocess
 from os import path, system
 import sys
 from skimage.io import load_sift
@@ -16,11 +17,11 @@ def bmp_to_key(imagename, outkey):
 
     # check if image file exists
     if not path.exists(imagename):
-        print "Image file does not exist."
+        print ("Image file does not exist.")
         sys.exit()
     # check if sift binary exists
     if not path.exists("./sift"):
-        print "sift binary is missing."
+        print ("sift binary is missing.")
         sys.exit()
     # convert bmp to ppm
     command1 = "bmptopnm " + imagename + " > temp.ppm"
@@ -29,17 +30,20 @@ def bmp_to_key(imagename, outkey):
     command2 = "ppmtopgm temp.ppm > temp.pgm"
     system(command2)
     # convert pgm to key
-    command3 = "./sift <temp.pgm >" + outkey
+    if os.name == "posix":
+        command3 = "./sift <temp.pgm >" + outkey
+    else:
+        command3 = "siftWin32 <temp.pgm >" + outkey
     system(command3)
     # clean up
     command4 = "rm -f temp.ppm temp.pgm"
     system(command4)
-    print "generated", outkey
+    print ("generated", outkey)
 
 def key_to_descriptor_array(keyfile):
     """ changes keys to an array """
     if not path.exists(keyfile):
-        print "Key file doesn't exist."
+        print ("Key file doesn't exist.")
         sys.exit()
     f = open(keyfile)
     my_sift_data = load_sift(f)
@@ -49,4 +53,4 @@ def key_to_descriptor_array(keyfile):
 
 if __name__ == '__main__':
     bmp_to_key("../trial/1809.Bmp", "1809.key")
-    print key_to_descriptor_array("1809.key")
+    print (key_to_descriptor_array("1809.key"))

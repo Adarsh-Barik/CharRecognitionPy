@@ -8,4 +8,3 @@ alldescriptors.txt is a large file (~105 MB) hence I have compressed it in allde
 - [ ] Generating training vectors using K-means clustering
 - [ ] Implementing SVM and variants for classification
 - [ ] Test results
-JUst trying something 
