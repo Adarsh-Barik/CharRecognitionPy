@@ -3,7 +3,7 @@ main file to character recognition
 Reference: http://personal.ee.surrey.ac.uk/Personal/T.Decampos/papers/decampos_etal_visapp2009.pdf
 github: https://github.com/Adarsh-Barik/CharRecognitionPy
 Discussion: https://docs.google.com/document/d/1Ccrn5BP424HiEsqlq86opxBvWaF_ki8TPLz7nwiEi70/edit
-author: adarsh
+author: mohith, adarsh
 """
 
 from sift_descriptor import bmp_to_key, key_to_descriptor_array
@@ -84,8 +84,10 @@ if imageclass != 0:
 	for row in csv_train_labels:
 		for i in imagename_vector:
 			if row[0] == str(i):
-				image_class = np.append(image_class, row[1])
-	np.savetxt("../data/storage/image_class.txt", image_class, fmt="%s")
+				image_class = np.append(image_class, ord(row[1]))
+	np.savetxt("../data/storage/image_class.txt", image_class,)
+else:
+	image_class = np.genfromtxt("../data/storage/imagename_vector.txt")
 
 # generating vector for svm
 vectorarray = 1

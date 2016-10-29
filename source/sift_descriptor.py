@@ -40,6 +40,7 @@ def bmp_to_key(imagename, outkey):
     system(command4)
     print ("generated", outkey)
 
+
 def key_to_descriptor_array(keyfile):
     """ changes keys to an array """
     if not path.exists(keyfile):
