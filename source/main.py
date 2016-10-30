@@ -8,6 +8,7 @@ author: mohith, adarsh
 
 from sift_descriptor import bmp_to_key, key_to_descriptor_array
 from get_cluster_centers import get_cluster_centers
+from get_svm_model import get_svm_model
 from os import listdir, path
 import numpy as np
 import csv
@@ -109,3 +110,7 @@ if vectorarray != 0:
 			image_vector_array = np.concatenate((image_vector_array, image_vector), axis=0	)
 		count = count + number_descriptor[i]
 	np.savetxt("../data/storage/image_vector_array.txt", image_vector_array)
+
+# lets run svm
+# by default for rbf kernel
+# svm_model = get_svm_model(image_vector_array, image_class)
