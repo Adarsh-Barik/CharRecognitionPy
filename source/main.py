@@ -113,4 +113,4 @@ if vectorarray != 0:
 
 # lets run svm
 # by default for rbf kernel
-# svm_model = get_svm_model(image_vector_array, image_class)
+svm_model = get_svm_model(image_vector_array, image_class)
