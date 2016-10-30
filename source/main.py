@@ -15,7 +15,7 @@ import numpy as np
 import csv
 # to store class objects as it is,
 # this is called serializing
-import pickle
+import cPickle as pickle
 
 # convert bmp files to corresponding key files
 bmp_dir = "../data/trainResized"
@@ -67,7 +67,7 @@ num_cluster_centers = 310
 
 # it takes lot of time to generate cluster centers
 # i have saved them in ../data/storage/clustercenters.txt
-cluster_centers_labels_stored = 1
+cluster_centers_labels_stored = 0
 
 if cluster_centers_labels_stored != 0:
 	# max iterations defaults to 300 and we should probably try it to increase
@@ -76,7 +76,7 @@ if cluster_centers_labels_stored != 0:
 	cluster_centers, labels = kmeans_model.cluster_centers_, kmeans_model.labels_
 	pickle.dump(kmeans_model, open("../data/storage/kmeans_model.p", 'wb'))
 else:
-	kmeans_model = pickle.load("../data/storage/kmeans_model.p")
+	kmeans_model = pickle.load(open("../data/storage/kmeans_model.p", 'rb'))
 	cluster_centers, labels = kmeans_model.cluster_centers_, kmeans_model.labels_
 
 
@@ -93,7 +93,7 @@ if imageclass != 0:
 				image_class = np.append(image_class, ord(row[1]))
 	np.savetxt("../data/storage/image_class.txt", image_class,)
 else:
-	image_class = np.genfromtxt("../data/storage/imagename_vector.txt")
+	image_class = np.genfromtxt("../data/storage/image_class.txt")
 
 # generating vector for svm
 vectorarray = 0
@@ -115,22 +115,24 @@ if vectorarray != 0:
 			image_vector_array = np.concatenate((image_vector_array, image_vector), axis=0	)
 		count = count + number_descriptor[i]
 	np.savetxt("../data/storage/image_vector_array.txt", image_vector_array)
+else:
+	image_vector_array = np.genfromtxt("../data/storage/image_vector_array.txt")
 
 # lets run svm
 # by default for rbf kernel
-store_svm_model = 1
+store_svm_model = 0
 
 if store_svm_model:
 	svm_model = get_svm_model(image_vector_array, image_class)
 	pickle.dump(svm_model, open("../data/storage/svm_model.p", 'wb'))
 else:
-	svm_model = pickle.load("../data/storage/svm_model.p")
+	svm_model = pickle.load(open("../data/storage/svm_model.p", 'rb'))
 
 # now that we have the model, let the prediction begin
 test_bmp_dir = "../data/testResized"
 test_key_dir = "../data/testResizedKeys"
 
-test_generate_key = 1
+test_generate_key = 0
 if test_generate_key != 0:
 	for imagefilename in listdir(test_bmp_dir):
 		testoutkey = test_key_dir + "/" + imagefilename + ".key"
