@@ -1,6 +1,8 @@
 /data/*
 !/data/trainResized
 !/data/trainResizedKeys
+!/data/testResized
+!/data/testResizedKeys
 !/data/storage
 /data/storage/alldescriptors.txt
 SIFTDemo
