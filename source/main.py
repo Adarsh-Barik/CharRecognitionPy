@@ -155,8 +155,13 @@ if alltestdescriptosaved != 0:
 		testiterkey = testiterkey + 1
 		testoutkey = test_key_dir + "/" + testfilename
 		mytestdescriptorarray = key_to_descriptor_array(testoutkey)
-		my_image_vector = get_image_vector(kmeans_model, mytestdescriptorarray)
-		my_image_label = svm_model.predict(my_image_vector)
+		# added a condition to check if there are no sift descriptors
+		if len(mytestdescriptorarray) == 0:
+			my_image_vector = np.zeros((1, 310))
+			my_image_label = ord('!')
+		else:
+			my_image_vector = get_image_vector(kmeans_model, mytestdescriptorarray)
+			my_image_label = svm_model.predict(my_image_vector)
 		a = path.splitext(testfilename)[0]
 		test_image_vector = np.append(test_image_vector, my_image_vector)
 		test_imagename_vector = np.append(test_imagename_vector, path.splitext(a)[0])
