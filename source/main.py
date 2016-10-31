@@ -15,7 +15,7 @@ import numpy as np
 import csv
 # to store class objects as it is,
 # this is called serializing
-import cPickle as pickle
+import pickle as pickle
 
 # convert bmp files to corresponding key files
 bmp_dir = "../data/trainResized"
