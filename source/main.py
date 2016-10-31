@@ -115,6 +115,8 @@ if vectorarray != 0:
 			image_vector_array = np.concatenate((image_vector_array, image_vector), axis=0	)
 		count = count + number_descriptor[i]
 	np.savetxt("../data/storage/image_vector_array.txt", image_vector_array)
+else:
+	image_vector_array = np.genfromtxt("../data/storage/image_vector_array.txt")
 
 # lets run svm
 # by default for rbf kernel
