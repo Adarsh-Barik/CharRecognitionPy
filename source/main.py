@@ -67,7 +67,7 @@ num_cluster_centers = 310
 
 # it takes lot of time to generate cluster centers
 # i have saved them in ../data/storage/clustercenters.txt
-cluster_centers_labels_stored = 0
+cluster_centers_labels_stored = 1
 
 if cluster_centers_labels_stored != 0:
 	# max iterations defaults to 300 and we should probably try it to increase
@@ -120,7 +120,7 @@ else:
 
 # lets run svm
 # by default for rbf kernel
-store_svm_model = 0
+store_svm_model = 1
 
 if store_svm_model:
 	svm_model = get_svm_model(image_vector_array, image_class)
@@ -161,6 +161,7 @@ if alltestdescriptosaved != 0:
 			my_image_label = ord('!')
 		else:
 			my_image_vector = get_image_vector(kmeans_model, mytestdescriptorarray)
+			print my_image_vector
 			my_image_label = svm_model.predict(my_image_vector)
 		a = path.splitext(testfilename)[0]
 		test_image_vector = np.append(test_image_vector, my_image_vector)

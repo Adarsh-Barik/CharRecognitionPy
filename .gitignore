@@ -3,6 +3,7 @@
 !/data/trainResizedKeys
 !/data/testResized
 !/data/testResizedKeys
+!/data/trainLabels.csv
 !/data/storage
 /data/storage/alldescriptors.txt
 /data/storage/alltestdescriptors.txt
