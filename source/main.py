@@ -15,7 +15,7 @@ import numpy as np
 import csv
 # to store class objects as it is,
 # this is called serializing
-import pickle
+import cPickle as pickle
 
 # convert bmp files to corresponding key files
 bmp_dir = "../data/trainResized"
@@ -67,7 +67,7 @@ num_cluster_centers = 310
 
 # it takes lot of time to generate cluster centers
 # i have saved them in ../data/storage/clustercenters.txt
-cluster_centers_labels_stored = 1
+cluster_centers_labels_stored = 0
 
 if cluster_centers_labels_stored != 0:
 	# max iterations defaults to 300 and we should probably try it to increase
@@ -76,7 +76,7 @@ if cluster_centers_labels_stored != 0:
 	cluster_centers, labels = kmeans_model.cluster_centers_, kmeans_model.labels_
 	pickle.dump(kmeans_model, open("../data/storage/kmeans_model.p", 'wb'))
 else:
-	kmeans_model = pickle.load("../data/storage/kmeans_model.p")
+	kmeans_model = pickle.load(open("../data/storage/kmeans_model.p", 'rb'))
 	cluster_centers, labels = kmeans_model.cluster_centers_, kmeans_model.labels_
 
 
@@ -93,7 +93,7 @@ if imageclass != 0:
 				image_class = np.append(image_class, ord(row[1]))
 	np.savetxt("../data/storage/image_class.txt", image_class,)
 else:
-	image_class = np.genfromtxt("../data/storage/imagename_vector.txt")
+	image_class = np.genfromtxt("../data/storage/image_class.txt")
 
 # generating vector for svm
 vectorarray = 0
@@ -120,19 +120,19 @@ else:
 
 # lets run svm
 # by default for rbf kernel
-store_svm_model = 1
+store_svm_model = 0
 
 if store_svm_model:
 	svm_model = get_svm_model(image_vector_array, image_class)
 	pickle.dump(svm_model, open("../data/storage/svm_model.p", 'wb'))
 else:
-	svm_model = pickle.load("../data/storage/svm_model.p")
+	svm_model = pickle.load(open("../data/storage/svm_model.p", 'rb'))
 
 # now that we have the model, let the prediction begin
 test_bmp_dir = "../data/testResized"
 test_key_dir = "../data/testResizedKeys"
 
-test_generate_key = 1
+test_generate_key = 0
 if test_generate_key != 0:
 	for imagefilename in listdir(test_bmp_dir):
 		testoutkey = test_key_dir + "/" + imagefilename + ".key"
@@ -155,8 +155,13 @@ if alltestdescriptosaved != 0:
 		testiterkey = testiterkey + 1
 		testoutkey = test_key_dir + "/" + testfilename
 		mytestdescriptorarray = key_to_descriptor_array(testoutkey)
-		my_image_vector = get_image_vector(kmeans_model, mytestdescriptorarray)
-		my_image_label = svm_model.predict(my_image_vector)
+		# added a condition to check if there are no sift descriptors
+		if len(mytestdescriptorarray) == 0:
+			my_image_vector = np.zeros((1, 310))
+			my_image_label = ord('!')
+		else:
+			my_image_vector = get_image_vector(kmeans_model, mytestdescriptorarray)
+			my_image_label = svm_model.predict(my_image_vector)
 		a = path.splitext(testfilename)[0]
 		test_image_vector = np.append(test_image_vector, my_image_vector)
 		test_imagename_vector = np.append(test_imagename_vector, path.splitext(a)[0])
