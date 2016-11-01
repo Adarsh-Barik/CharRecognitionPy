@@ -15,7 +15,11 @@ import numpy as np
 import csv
 # to store class objects as it is,
 # this is called serializing
+<<<<<<< HEAD
 import pickle as pickle
+=======
+import cPickle as pickle
+>>>>>>> a2b02710f760f8a723f37e2c2f73650e8cf3276f
 
 # convert bmp files to corresponding key files
 bmp_dir = "../data/trainResized"
@@ -123,7 +127,7 @@ else:
 
 # lets run svm
 # by default for rbf kernel
-store_svm_model = 1
+store_svm_model = 0
 
 if store_svm_model:
 	# good para C=2.5, 3.5, gamma=auto 35%, C=4.5, gamma=auto 37%
@@ -162,7 +166,11 @@ if alltestdescriptosaved != 0:
 		# added a condition to check if there are no sift descriptors
 		if len(mytestdescriptorarray) == 0:
 			my_image_vector = np.zeros((1, 310))
+<<<<<<< HEAD
 			my_image_label = '!'
+=======
+			my_image_label = ord('!')
+>>>>>>> a2b02710f760f8a723f37e2c2f73650e8cf3276f
 		else:
 			my_image_vector = get_image_vector(kmeans_model, mytestdescriptorarray)
 			my_image_label = svm_model.predict(my_image_vector)
