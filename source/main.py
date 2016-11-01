@@ -60,6 +60,10 @@ if alldescriptorsaved != 0:
 	np.savetxt("../data/storage/number_descriptor.txt", number_descriptor)
 else:
 	alldescriptorarray = np.genfromtxt("../data/storage/alldescriptors.txt")
+	imagename_vector = np.genfromtxt("../data/storage/imagename_vector.txt", dtype=None)
+	number_descriptor = np.genfromtxt("../data/storage/number_descriptor.txt", dtype=None)
+
+
 
 # geenrate bag of words
 # generate 5 words per class , total = 5 * 62 = 310
@@ -81,17 +85,18 @@ else:
 
 
 # extracting image classes from the csv file
-imageclass = 0
+imageclass = 1
 if imageclass != 0:
-	train_labels = open('../data/trainLabels.csv')
-	csv_train_labels = csv.reader(train_labels)
-	imagename_vector = np.genfromtxt("../data/storage/imagename_vector.txt", dtype=None)
+	with open('../data/trainLabels.csv', 'r') as train_labels:
+		csv_train_labels = csv.reader(train_labels)
+		train_labels_list = list(csv_train_labels)
+
 	image_class = []
-	for row in csv_train_labels:
-		for i in imagename_vector:
+	for i in imagename_vector:
+		for row in train_labels_list:
 			if row[0] == str(i):
-				image_class = np.append(image_class, ord(row[1]))
-	np.savetxt("../data/storage/image_class.txt", image_class,)
+				image_class = np.append(image_class, row[1])
+	np.savetxt("../data/storage/image_class.txt", image_class, fmt="%s")
 else:
 	image_class = np.genfromtxt("../data/storage/image_class.txt")
 
@@ -100,9 +105,6 @@ vectorarray = 1
 if vectorarray != 0:
 	count = 0
 	image_vector_array = []
-	imagename_vector = np.genfromtxt("../data/storage/imagename_vector.txt", dtype=None)
-	number_descriptor = np.genfromtxt("../data/storage/number_descriptor.txt", dtype=None)
-	# labels = np.genfromtxt("../data/storage/labels.txt", dtype=None)
 	for i in range(len(imagename_vector)):
 		image_vector = np.zeros((1, 310))
 		for j in range(int(number_descriptor[i])):
@@ -123,7 +125,8 @@ else:
 store_svm_model = 1
 
 if store_svm_model:
-	svm_model = get_svm_model(image_vector_array, image_class)
+	# good para C=2.5, 3.5, gamma=auto 35%, C=4.5, gamma=auto 37%
+	svm_model = get_svm_model(image_vector_array, image_class, Cpara=4.5)
 	pickle.dump(svm_model, open("../data/storage/svm_model.p", 'wb'))
 else:
 	svm_model = pickle.load(open("../data/storage/svm_model.p", 'rb'))
@@ -158,7 +161,7 @@ if alltestdescriptosaved != 0:
 		# added a condition to check if there are no sift descriptors
 		if len(mytestdescriptorarray) == 0:
 			my_image_vector = np.zeros((1, 310))
-			my_image_label = ord('!')
+			my_image_label = '!'
 		else:
 			my_image_vector = get_image_vector(kmeans_model, mytestdescriptorarray)
 			print my_image_vector
@@ -172,6 +175,7 @@ if alltestdescriptosaved != 0:
 			alltestdescriptorarray = mytestdescriptorarray
 		else:
 			alltestdescriptorarray = np.concatenate((alltestdescriptorarray, mytestdescriptorarray), axis=0)
+		print("Test Image Check")
 	np.savetxt("../data/storage/alltestdescriptors.txt", alltestdescriptorarray)
 	np.savetxt("../data/storage/test_imagename_vector.txt", test_imagename_vector, fmt="%s")
 	np.savetxt("../data/storage/test_image_vector.txt", test_image_vector, fmt="%s")
