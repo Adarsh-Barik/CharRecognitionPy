@@ -96,13 +96,13 @@ else:
 	image_class = np.genfromtxt("../data/storage/image_class.txt")
 
 # generating vector for svm
-vectorarray = 0
+vectorarray = 1
 if vectorarray != 0:
 	count = 0
 	image_vector_array = []
 	imagename_vector = np.genfromtxt("../data/storage/imagename_vector.txt", dtype=None)
 	number_descriptor = np.genfromtxt("../data/storage/number_descriptor.txt", dtype=None)
-	labels = np.genfromtxt("../data/storage/labels.txt", dtype=None)
+	# labels = np.genfromtxt("../data/storage/labels.txt", dtype=None)
 	for i in range(len(imagename_vector)):
 		image_vector = np.zeros((1, 310))
 		for j in range(int(number_descriptor[i])):
