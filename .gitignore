@@ -6,6 +6,7 @@
 !/data/trainLabels.csv
 !/data/storage
 /data/storage/alldescriptors.txt
+/source/Backup
 /data/storage/alltestdescriptors.txt
 SIFTDemo
 *.pyc

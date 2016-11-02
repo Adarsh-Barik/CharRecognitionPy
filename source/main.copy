@@ -16,7 +16,11 @@ import numpy as np
 import csv
 # to store class objects as it is,
 # this is called serializing
-import cPickle as pickle
+from sys import version_info
+if version_info < (3, 0):
+	import cPickle as pickle
+else:
+	import pickle as pickle
 
 # PREPROCESSING: IMAGE TO IMAGE VECTOR #
 # convert bmp files to corresponding key files
@@ -173,6 +177,7 @@ if store_svm_model:
 else:
 	svm_model = pickle.load(open("../data/storage/train/svm_model.p", 'rb'))
 
+# VALIDATE AND TEST #
 # get val image vectors
 for i in range(num_val_samples):
 	if type(val_image_name_list[i]) == np.int64:
