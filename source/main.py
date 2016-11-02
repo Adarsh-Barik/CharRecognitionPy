@@ -175,7 +175,6 @@ if alltestdescriptosaved != 0:
 			alltestdescriptorarray = mytestdescriptorarray
 		else:
 			alltestdescriptorarray = np.concatenate((alltestdescriptorarray, mytestdescriptorarray), axis=0)
-		print("Test Image Check")
 	np.savetxt("../data/storage/alltestdescriptors.txt", alltestdescriptorarray)
 	np.savetxt("../data/storage/test_imagename_vector.txt", test_imagename_vector, fmt="%s")
 	np.savetxt("../data/storage/test_image_vector.txt", test_image_vector, fmt="%s")
