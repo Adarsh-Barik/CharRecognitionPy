@@ -145,12 +145,12 @@ if imageclass != 0:
 	np.savetxt("../data/storage/val/val_labels.txt", val_labels, fmt="%s")
 	np.savetxt("../data/storage/test/test_labels.txt", test_labels, fmt="%s")
 else:
-	train_labels = np.genfromtxt("../data/storage/train/train_labels.txt")
-	val_labels = np.genfromtxt("../data/storage/val/val_labels.txt")
-	test_labels = np.genfromtxt("../data/storage/test/test_labels.txt")
+	train_labels = np.genfromtxt("../data/storage/train/train_labels.txt", dtype='U')
+	val_labels = np.genfromtxt("../data/storage/val/val_labels.txt", dtype='U')
+	test_labels = np.genfromtxt("../data/storage/test/test_labels.txt", dtype='U')
 
 # generating vector for svm
-vectorarray = 1
+vectorarray = 0
 if vectorarray != 0:
 	count = 0
 	image_vector_array = []
@@ -199,13 +199,25 @@ for i in range(num_test_samples):
 		test_image_vector[i] = get_image_vector(kmeans_model, descriptorarray)
 
 # lets tune hyperparameter C
-trainscore = np.zeros(20)
-valscore = np.zeros(20)
-testscore = np.zeros(20)
-myrange = range(20)
-myrange[0] = 0.1
-for i in myrange:
-	svm_model_gen = get_svm_model(train_image_vector, train_labels, Cpara=1.0 * i)
+trainscore = np.zeros(15)
+valscore = np.zeros(15)
+testscore = np.zeros(15)
+myrange = [0.1, 0.5, 1.0, 5., 10., 15., 20., 25., 30., 35., 40., 50., 60., 70., 100]
+for i in range(len(myrange)):
+	svm_model_gen = get_svm_model(train_image_vector, train_labels, Cpara=1.0 * myrange[i])
 	trainscore[i] = svm_model_gen.score(train_image_vector, train_labels)
 	valscore[i] = svm_model_gen.score(val_image_vector, val_labels)
 	testscore[i] = svm_model_gen.score(test_image_vector, test_labels)
+
+# plots for hyperparameter estimation (C)
+plot_needed = 1
+
+if plot_needed:
+	import matplotlib.pyplot as plt 
+	fig = plt.figure()
+	l1, l2, l3 = plt.plot(myrange,trainscore, 'ro',myrange,valscore,'bs',myrange,testscore, 'k^')
+	plt.xlabel('C')
+	plt.ylabel('Accuracy')
+	plt.title('Parameter Estimation for C')
+	fig.legend((l1, l2, l3), ('Training', 'Validation', 'Testing'), loc = 'lower right')
+	plt.show()
