@@ -16,11 +16,17 @@ import numpy as np
 import csv
 # to store class objects as it is,
 # this is called serializing
+<<<<<<< HEAD
 from sys import version_info
 if version_info < (3, 0):
 	import cPickle as pickle
 else:
 	import pickle as pickle
+||||||| merged common ancestors
+import cPickle as pickle
+=======
+import pickle as pickle
+>>>>>>> b73523557227eef84e9c0cd5748d8d2585024362
 
 # PREPROCESSING: IMAGE TO IMAGE VECTOR #
 # convert bmp files to corresponding key files
@@ -123,7 +129,7 @@ else:
 
 
 # extracting image classes from the csv file
-imageclass = 1
+imageclass = 0
 if imageclass != 0:
 	with open('../data/trainLabels.csv', 'r') as train_labels_file:
 		csv_train_labels = csv.reader(train_labels_file)
