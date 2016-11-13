@@ -5,6 +5,7 @@
 !/data/testResizedKeys
 !/data/trainLabels.csv
 !/data/storage
+/data/storage/**/*.p
 /data/storage/alldescriptors.txt
 /source/Backup
 /data/storage/alltestdescriptors.txt

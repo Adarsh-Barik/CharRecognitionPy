@@ -168,7 +168,7 @@ else:
 
 # lets run svm
 # by default for rbf kernel
-store_svm_model = 1
+store_svm_model = 0
 
 if store_svm_model:
 	# good para C=2.5, 3.5, gamma=auto 35%, C=4.5, gamma=auto 37%
@@ -198,18 +198,26 @@ for i in range(num_test_samples):
 	if len(descriptorarray) != 0:
 		test_image_vector[i] = get_image_vector(kmeans_model, descriptorarray)
 
+# Adding train + validation dataset to get train vectors
+trainvalue = 0
+if trainvalue != 0:
+	trainval_image_vector = np.concatenate((train_image_vector,val_image_vector))
+	trainval_labels = np.concatenate((np.asarray(train_labels),np.asarray(val_labels)))
+	np.savetxt("../data/storage/train/trainval_image_vector.txt", trainval_image_vector)
+	np.savetxt("../data/storage/train/trainval_labels.txt", trainval_labels,fmt="%s")
+else:
+	trainval_image_vector = np.genfromtxt("../data/storage/train/trainval_image_vector.txt")
+	trainval_labels = np.genfromtxt("../data/storage/train/trainval_labels.txt")
 # lets tune hyperparameter C
-tuneparameter = 0
-if tuneparameter:
-	trainscore = np.zeros(15)
-	valscore = np.zeros(15)
-	testscore = np.zeros(15)
-	myrange = [0.1, 0.5, 1.0, 5., 10., 15., 20., 25., 30., 35., 40., 50., 60., 70., 100]
-	for i in range(len(myrange)):
-		svm_model_gen = get_svm_model(train_image_vector, train_labels, Cpara=1.0 * myrange[i])
-		trainscore[i] = svm_model_gen.score(train_image_vector, train_labels)
-		valscore[i] = svm_model_gen.score(val_image_vector, val_labels)
-		testscore[i] = svm_model_gen.score(test_image_vector, test_labels)
+'''trainscore = np.zeros(15)
+valscore = np.zeros(15)
+testscore = np.zeros(15)
+myrange = [0.1, 0.5, 1.0, 5., 10., 15., 20., 25., 30., 35., 40., 50., 60., 70., 100]
+for i in range(len(myrange)):
+	svm_model_gen = get_svm_model(train_image_vector, train_labels, Cpara=1.0 * myrange[i])
+	trainscore[i] = svm_model_gen.score(train_image_vector, train_labels)
+	valscore[i] = svm_model_gen.score(val_image_vector, val_labels)
+	testscore[i] = svm_model_gen.score(test_image_vector, test_labels)'''
 
 # plots for hyperparameter estimation (C)
 plot_needed = 0
