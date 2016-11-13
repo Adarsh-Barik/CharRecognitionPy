@@ -29,7 +29,7 @@ key_dir = "../data/trainResizedKeys"
 
 # we should not generate keys everytime we run the code
 # make it 0 once keys have been generated
-generate_key = 1
+generate_key = 0
 if generate_key != 0:
 	for filename in listdir(bmp_dir):
 		outkey = key_dir + "/" + filename + ".key"
@@ -67,7 +67,7 @@ test_labels = [0 for i in range(num_test_samples)]
 # concatenate all sift descriptors in a single numpy array to be used in k-means
 # i have stored these descriptors in txt file ../data/storage/alldescriptors.txt
 # regenerate only if required
-alltraindescriptorsaved = 1
+alltraindescriptorsaved = 0
 
 if alltraindescriptorsaved != 0:
 	iterkey = 0
@@ -109,7 +109,7 @@ num_cluster_centers = 310
 
 # it takes lot of time to generate cluster centers
 # i have saved them in ../data/storage/clustercenters.txt
-cluster_centers_labels_stored = 1
+cluster_centers_labels_stored = 0
 
 if cluster_centers_labels_stored != 0:
 	# max iterations defaults to 300 and we should probably try it to increase
@@ -123,7 +123,7 @@ else:
 
 
 # extracting image classes from the csv file
-imageclass = 1
+imageclass = 0
 if imageclass != 0:
 	with open('../data/trainLabels.csv', 'r') as train_labels_file:
 		csv_train_labels = csv.reader(train_labels_file)
@@ -150,7 +150,7 @@ else:
 	test_labels = np.genfromtxt("../data/storage/test/test_labels.txt", dtype='U')
 
 # generating vector for svm
-vectorarray = 1
+vectorarray = 0
 if vectorarray != 0:
 	count = 0
 	image_vector_array = []
@@ -172,7 +172,7 @@ store_svm_model = 1
 
 if store_svm_model:
 	# good para C=2.5, 3.5, gamma=auto 35%, C=4.5, gamma=auto 37%
-	svm_model = get_svm_model(train_image_vector, train_labels, Cpara=4.5)
+	svm_model = get_svm_model(train_image_vector, train_labels, Cpara=30.)
 	pickle.dump(svm_model, open("../data/storage/train/svm_model.p", 'wb'))
 else:
 	svm_model = pickle.load(open("../data/storage/train/svm_model.p", 'rb'))
@@ -199,18 +199,20 @@ for i in range(num_test_samples):
 		test_image_vector[i] = get_image_vector(kmeans_model, descriptorarray)
 
 # lets tune hyperparameter C
-trainscore = np.zeros(15)
-valscore = np.zeros(15)
-testscore = np.zeros(15)
-myrange = [0.1, 0.5, 1.0, 5., 10., 15., 20., 25., 30., 35., 40., 50., 60., 70., 100]
-for i in range(len(myrange)):
-	svm_model_gen = get_svm_model(train_image_vector, train_labels, Cpara=1.0 * myrange[i])
-	trainscore[i] = svm_model_gen.score(train_image_vector, train_labels)
-	valscore[i] = svm_model_gen.score(val_image_vector, val_labels)
-	testscore[i] = svm_model_gen.score(test_image_vector, test_labels)
+tuneparameter = 0
+if tuneparameter:
+	trainscore = np.zeros(15)
+	valscore = np.zeros(15)
+	testscore = np.zeros(15)
+	myrange = [0.1, 0.5, 1.0, 5., 10., 15., 20., 25., 30., 35., 40., 50., 60., 70., 100]
+	for i in range(len(myrange)):
+		svm_model_gen = get_svm_model(train_image_vector, train_labels, Cpara=1.0 * myrange[i])
+		trainscore[i] = svm_model_gen.score(train_image_vector, train_labels)
+		valscore[i] = svm_model_gen.score(val_image_vector, val_labels)
+		testscore[i] = svm_model_gen.score(test_image_vector, test_labels)
 
 # plots for hyperparameter estimation (C)
-plot_needed = 1
+plot_needed = 0
 
 if plot_needed:
 	import matplotlib.pyplot as plt
@@ -221,3 +223,23 @@ if plot_needed:
 	plt.title('Parameter Estimation for C')
 	fig.legend((l1, l2, l3), ('Training', 'Validation', 'Testing'), loc='lower right')
 	plt.show()
+
+# getting svm model for one vs rest
+store_svm_model_ovr = 1
+if store_svm_model_ovr:
+	# good para C=2.5, 3.5, gamma=auto 35%, C=4.5, gamma=auto 37%
+	svm_model_ovr = get_svm_model(train_image_vector, train_labels, Cpara=30., svmtype='ovr')
+	pickle.dump(svm_model_ovr, open("../data/storage/train/svm_model_ovr.p", 'wb'))
+else:
+	svm_model_ovr = pickle.load(open("../data/storage/train/svm_model_ovr.p", 'rb'))
+
+# testing against different types of kernels
+strore_diff_kernel_svm = 1
+if strore_diff_kernel_svm:
+	svm_model_lin = get_svm_model(train_image_vector, train_labels, Cpara=30., kernelpara='linear')
+	pickle.dump(svm_model_lin, open("../data/storage/train/svm_model_lin.p", 'wb'))
+	svm_model_poly = get_svm_model(train_image_vector, train_labels, Cpara=30., kernelpara='poly')
+	pickle.dump(svm_model_poly, open("../data/storage/train/svm_model_poly.p", 'wb'))
+else:
+	svm_model_lin = pickle.load(open("../data/storage/train/svm_model_lin.p", 'rb'))
+	svm_model_poly = pickle.load(open("../data/storage/train/svm_model_poly.p", 'rb'))
