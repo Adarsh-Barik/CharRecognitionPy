@@ -233,7 +233,7 @@ if plot_needed:
 	plt.show()
 
 # getting svm model for one vs rest
-store_svm_model_ovr = 1
+store_svm_model_ovr = 0
 if store_svm_model_ovr:
 	# good para C=2.5, 3.5, gamma=auto 35%, C=4.5, gamma=auto 37%
 	svm_model_ovr = get_svm_model(train_image_vector, train_labels, Cpara=30., svmtype='ovr')
@@ -242,7 +242,7 @@ else:
 	svm_model_ovr = pickle.load(open("../data/storage/train/svm_model_ovr.p", 'rb'))
 
 # testing against different types of kernels
-strore_diff_kernel_svm = 1
+strore_diff_kernel_svm = 0
 if strore_diff_kernel_svm:
 	svm_model_lin = get_svm_model(train_image_vector, train_labels, Cpara=30., kernelpara='linear')
 	pickle.dump(svm_model_lin, open("../data/storage/train/svm_model_lin.p", 'wb'))
