@@ -1,7 +1,7 @@
 """
 Python module to run k-means algorithm and get cluster centers for given array of points
 Reference: http://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html
-author : adarsh
+author : mohith, adarsh
 """
 
 from sklearn.cluster import KMeans

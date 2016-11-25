@@ -1,5 +1,4 @@
-import kfolds
-import bootstrap
+import fit
 
 
 class CrossValidation():
@@ -14,7 +13,4 @@ class CrossValidation():
 		self.best_params_ = None
 
 	def fit(self, X, y):
-		if self.cv_type == 'kfold':
-			kfolds.fit(X, y, self.estimator, self.cv_results_, self.best_score_, self.best_params_, self.param_grid, self.cv_n)
-		else:
-			bootstrap.fit(X, y, self.estimator, self.cv_results_, self.best_score_, self.best_score_, self.param_grid, self.cv_n)
+		fit.fit(X, y, self.estimator, self.cv_results_, self.best_score_, self.best_params_, self.param_grid, self.cv_n, self.cv_type)
