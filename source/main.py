@@ -69,6 +69,7 @@ test_labels = [0 for i in range(num_test_samples)]
 # concatenate all sift descriptors in a single numpy array to be used in k-means
 # i have stored these descriptors in txt file ../data/storage/alldescriptors.txt
 # regenerate only if required
+print ("Getting descriptors from images...")
 alltraindescriptorsaved = 0
 
 if alltraindescriptorsaved != 0:
@@ -103,10 +104,12 @@ else:
 	train_num_descriptor_array = np.genfromtxt("../data/storage/train/train_num_descriptor_array.txt", dtype=None)
 	val_image_name_list = np.genfromtxt("../data/storage/val/val_image_name_list.txt", dtype=None)
 	test_image_name_list = np.genfromtxt("../data/storage/test/test_image_name_list.txt", dtype=None)
+print ("Done.")
 
 
 # geenrate bag of words
 # generate 5 words per class , total = 5 * 62 = 310
+print ("Generating bag of words using Kmeans...")
 num_cluster_centers = 310
 
 # it takes lot of time to generate cluster centers
@@ -123,8 +126,10 @@ else:
 	kmeans_model = pickle.load(open("../data/storage/train/kmeans_model.p", 'rb'))
 	cluster_centers, labels = kmeans_model.cluster_centers_, kmeans_model.labels_
 
+print ("Done")
 
 # extracting image classes from the csv file
+print ("Extracting image class from csv file...")
 imageclass = 0
 if imageclass != 0:
 	with open('../data/trainLabels.csv', 'r') as train_labels_file:
@@ -151,7 +156,10 @@ else:
 	val_labels = np.genfromtxt("../data/storage/val/val_labels.txt", dtype='U')
 	test_labels = np.genfromtxt("../data/storage/test/test_labels.txt", dtype='U')
 
+print ("Done.")
+
 # generating vector for svm
+print ("Generating image vectors...")
 vectorarray = 0
 if vectorarray != 0:
 	count = 0
@@ -168,8 +176,10 @@ if vectorarray != 0:
 else:
 	train_image_vector = np.genfromtxt("../data/storage/train/train_image_vector.txt")
 
+print ("Done.")
 # lets run svm
 # by default for rbf kernel
+print ("Generating basic SVM model...")
 store_svm_model = 1
 
 if store_svm_model:
@@ -179,6 +189,7 @@ if store_svm_model:
 else:
 	svm_model = pickle.load(open("../data/storage/train/svm_model.p", 'rb'))
 
+print ("Done. [This will be removed in later versions]")
 # VALIDATE AND TEST #
 # get val image vectors
 for i in range(num_val_samples):
@@ -213,11 +224,25 @@ all_image_labels[length1:length1 + length2] = val_labels
 all_image_vectors[length1 + length2:length1 + length2 + length3, :] = test_image_vector
 all_image_labels[length1 + length2:length1 + length2 + length3] = test_labels
 
-parameters = {'kernel': ['linear', 'rbf'], 'C': [1, 10, 20, 30, 50], 'gamma': [0.00001, 0.0001, 0.001, 0.01, 0.1, 1]}
-svr = svm.SVC()
-clf = CrossValidation(svr, parameters, cv_n=10)
-clf.fit(all_image_vectors, all_image_labels)
+print ("Starting Cross Validation...")
 
+print ("CV for linear kernel")
+parameters_lin = {'kernel': ['linear'], 'C': [1, 10, 20, 30]}
+svr = svm.SVC()
+clf_lin = CrossValidation(svr, parameters_lin, cv_n=3)
+clf_lin.fit(all_image_vectors, all_image_labels)
+
+print ("CV for poly kernel")
+parameters_poly = {'kernel': ['poly'], 'C': [1, 10, 20, 30], 'degree': [2, 3, 5]}
+clf_poly = CrossValidation(svr, parameters_poly, cv_n=3)
+clf_poly.fit(all_image_vectors, all_image_labels)
+
+print ("CV for rbf kernel")
+parameters_rbf = {'kernel': ['rbf'], 'C': [1, 10, 20, 30], 'gamma': [0.000001, 0.0001, 0.1, 1]}
+clf_rbf = CrossValidation(svr, parameters_rbf, cv_n=3)
+clf_rbf.fit(all_image_vectors, all_image_labels)
+
+print ("Done.")
 # # Adding train + validation dataset to get train vectors
 # trainvalue = 0
 # if trainvalue != 0:

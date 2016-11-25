@@ -87,7 +87,8 @@ def fit(X, y, estimator, cv_results_, best_score_, best_params_, param_grid, cv_
 
 	n = len(X)
 	N = range(n)
-	shuffled_index = range(n)
+	shuffled_index = list(range(n))	
+	type(shuffled_index)
 	shuffle(shuffled_index)
 	X_rand = X[shuffled_index, :]
 	y_rand = y[shuffled_index]
