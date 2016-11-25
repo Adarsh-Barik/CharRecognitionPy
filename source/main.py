@@ -11,6 +11,8 @@ from sift_descriptor import bmp_to_key, key_to_descriptor_array
 from get_cluster_centers import get_cluster_centers
 from get_svm_model import get_svm_model
 from get_image_vector import get_image_vector
+from cross_validation_cl import CrossValidation
+from sklearn import svm
 from os import listdir, path
 import numpy as np
 import csv
@@ -198,26 +200,46 @@ for i in range(num_test_samples):
 	if len(descriptorarray) != 0:
 		test_image_vector[i] = get_image_vector(kmeans_model, descriptorarray)
 
-# Adding train + validation dataset to get train vectors
-trainvalue = 0
-if trainvalue != 0:
-	trainval_image_vector = np.concatenate((train_image_vector, val_image_vector))
-	trainval_labels = np.concatenate((np.asarray(train_labels), np.asarray(val_labels)))
-	np.savetxt("../data/storage/train/trainval_image_vector.txt", trainval_image_vector)
-	np.savetxt("../data/storage/train/trainval_labels.txt", trainval_labels, fmt="%s")
-else:
-	trainval_image_vector = np.genfromtxt("../data/storage/train/trainval_image_vector.txt")
-	trainval_labels = np.genfromtxt("../data/storage/train/trainval_labels.txt")
-# lets tune hyperparameter C
-'''trainscore = np.zeros(15)
-valscore = np.zeros(15)
-testscore = np.zeros(15)
-myrange = [0.1, 0.5, 1.0, 5., 10., 15., 20., 25., 30., 35., 40., 50., 60., 70., 100]
-for i in range(len(myrange)):
-	svm_model_gen = get_svm_model(train_image_vector, train_labels, Cpara=1.0 * myrange[i])
-	trainscore[i] = svm_model_gen.score(train_image_vector, train_labels)
-	valscore[i] = svm_model_gen.score(val_image_vector, val_labels)
-	testscore[i] = svm_model_gen.score(test_image_vector, test_labels)'''
+length1, width1 = train_image_vector.shape
+length2 = len(val_image_vector)
+length3 = len(test_image_vector)
+
+all_image_vectors = np.zeros((length1 + length2 + length3, width1))
+all_image_labels = np.zeros(length1 + length2 + length3, dtype='<U1')
+all_image_vectors[0:length1, :] = train_image_vector
+all_image_labels[0:length1] = train_labels
+all_image_vectors[length1:length1 + length2, :] = val_image_vector
+all_image_labels[length1:length1 + length2] = val_labels
+all_image_vectors[length1 + length2:length1 + length2 + length3, :] = test_image_vector
+all_image_labels[length1 + length2:length1 + length2 + length3] = test_labels
+
+parameters = {'kernel': ['linear', 'rbf'], 'C': [1, 10, 20, 30, 50], 'gamma': [0.00001, 0.0001, 0.001, 0.01, 0.1, 1]}
+svr = svm.SVC()
+clf = CrossValidation(svr, parameters, cv_n=10)
+clf.fit(all_image_vectors, all_image_labels)
+
+# # Adding train + validation dataset to get train vectors
+# trainvalue = 0
+# if trainvalue != 0:
+# 	trainval_image_vector = np.concatenate((train_image_vector, val_image_vector))
+# 	trainval_labels = np.concatenate((np.asarray(train_labels), np.asarray(val_labels)))
+# 	np.savetxt("../data/storage/train/trainval_image_vector.txt", trainval_image_vector)
+# 	np.savetxt("../data/storage/train/trainval_labels.txt", trainval_labels, fmt="%s")
+# else:
+# 	trainval_image_vector = np.genfromtxt("../data/storage/train/trainval_image_vector.txt")
+# 	trainval_labels = np.genfromtxt("../data/storage/train/trainval_labels.txt")
+
+
+# # lets tune hyperparameter C
+# '''trainscore = np.zeros(15)
+# valscore = np.zeros(15)
+# testscore = np.zeros(15)
+# myrange = [0.1, 0.5, 1.0, 5., 10., 15., 20., 25., 30., 35., 40., 50., 60., 70., 100]
+# for i in range(len(myrange)):
+# 	svm_model_gen = get_svm_model(train_image_vector, train_labels, Cpara=1.0 * myrange[i])
+# 	trainscore[i] = svm_model_gen.score(train_image_vector, train_labels)
+# 	valscore[i] = svm_model_gen.score(val_image_vector, val_labels)
+# 	testscore[i] = svm_model_gen.score(test_image_vector, test_labels)'''
 
 # plots for hyperparameter estimation (C)
 # plot_needed = 0
