@@ -112,3 +112,6 @@ def fit(X, y, estimator, cv_results_, best_score_, best_params_, param_grid, cv_
 		cv_results_['mean_train_score'][i] /= cv_n * 1.0
 		cv_results_['mean_test_score'][i] /= cv_n * 1.0
 
+	best_index = cv_results_['mean_test_score'].index(max(cv_results_['mean_test_score']))
+	best_score_ = max(cv_results_['mean_test_score'])
+	best_params_ = cv_results_['params'][best_index]
