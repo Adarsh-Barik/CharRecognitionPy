@@ -14,7 +14,7 @@ def setdiff(A, B):
 	return X
 
 
-def fit(X, y, estimator, cv_results_, best_score_, best_params_, param_grid, cv_n):
+def get_all_param_combinations(param_grid):
 	kernels = ['rbf']
 	Cs = [1.0]
 	degrees = [3]
@@ -28,7 +28,11 @@ def fit(X, y, estimator, cv_results_, best_score_, best_params_, param_grid, cv_
 			degrees = param_grid['degree']
 		elif key == 'gamma':
 			gammas = param_grid['gamma']
+	all_combinations = [a for a in itertools.product(kernels, Cs, degrees, gammas)]
+	return all_combinations
 
+
+def fit(X, y, estimator, cv_results_, best_score_, best_params_, param_grid, cv_n):
 	cv_results_['param_kernel'] = []
 	cv_results_['param_gamma'] = []
 	cv_results_['param_degree'] = []
@@ -39,13 +43,13 @@ def fit(X, y, estimator, cv_results_, best_score_, best_params_, param_grid, cv_
 		cv_results_['split' + i + 'train_score'] = []
 	cv_results_['mean_train_score'] = []
 	cv_results_['mean_test_score'] = []
-	all_combinations = [a for a in itertools.product(kernels, Cs, degrees, gammas)]
+	all_combinations = get_all_param_combinations(param_grid)
 
 	n = len(X)
 	N = range(n)
 	for params in all_combinations:
-		estimator.set_params('kernel'=params[0], 'C'=parmas[1], 'degree'=params[2], 'gammas'=params[3])
-		cv_results_['params'].append({'kernel': params[0], 'C': parmas[1], 'degree': params[2], 'gammas': params[3]})
+		estimator.set_params(kernel=params[0], C=params[1], degree=params[2], gamma=params[3])
+		cv_results_['params'].append({'kernel': params[0], 'C': params[1], 'degree': params[2], 'gammas': params[3]})
 		cv_results_['param_kernel'].append(params[0])
 		cv_results_['param_gamma'].append(params[3])
 		cv_results_['param_degree'].append(params[2])
@@ -62,6 +66,3 @@ def fit(X, y, estimator, cv_results_, best_score_, best_params_, param_grid, cv_
 			model = estimator.fit(Xi, yi)
 			cv_results_['split' + i + 'train_score'].append(model.score(Xi, yi))
 			cv_results_['split' + i + 'train_score'].append(model.score(Xt, yt))
-
-
-
