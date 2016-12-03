@@ -1,0 +1,42 @@
+# Configuration file
+# Send any query to abarik@purdue.edu
+# Read the comments before making any changes
+
+# Configuration that is read during run-time
+[RUNTIME_CONFIG]
+
+# whether to generate image vectors again
+DO_PREPROCESSING = True
+# length of image vectors
+NUM_OF_WORDS = 310
+
+# This section contains some default configurations
+# We recommend not to change these
+[DEFAULT_CONFIG]
+
+# folder that contains bmp images
+BMP_DIR = ../data/trainResized
+# folder that contains SIFT keys 
+KEY_DIR = ../data/trainResizedKeys
+# folder where we store variables
+STORAGE_DIR = ../data/storage/
+
+
+# We store certain variables in plain text files
+# These can be reloaded during rerun of code
+#  Usually, these need to be changed only after
+# changes to original code
+[STORAGE_CONFIG]
+
+# load pre-generated SIFT keys from text files
+LOAD_KEYS_FROM_FILE = True
+# load pre-generated SIFT descriptors from text files
+LOAD_DESCRIPTORS_FROM_FILE = True
+# load pre-generated bag of words
+LOAD_BAG_OF_WORDS = True
+# load pre-generated image labels
+LOAD_IMAGE_LABELS = False
+# load pre-generated image vectors
+LOAD_IMAGE_VECTORS = False
+# load pre-generated SVM model
+LOAD_SVM_MODEL = False
