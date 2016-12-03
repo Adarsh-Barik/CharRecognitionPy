@@ -4,7 +4,7 @@ uses GridSearchCV object as main result
 author: mohith, adarsh
 """
 import matplotlib.pyplot as plt
-from sklearn.model_selection._search import GridSearchCV
+from cross_validation_cl import CrossValidation
 
 
 def check_fix_params(fixedparams, myparams):
@@ -15,7 +15,7 @@ def check_fix_params(fixedparams, myparams):
 
 
 def generate_2d_plots(gridsearchcv, fixedparams={'kernel': 'rbf'}, hyperparameter='C', result='accuracy', log=False):
-	if type(gridsearchcv) != GridSearchCV:
+	if type(gridsearchcv) != CrossValidation:
 		print("Please provide a valid GridSearchCV object.")
 		return
 	if result == 'accuracy':
@@ -44,12 +44,18 @@ def generate_2d_plots(gridsearchcv, fixedparams={'kernel': 'rbf'}, hyperparamete
 			test_result_list.append(tot_test_results[i])
 
 	fig = plt.figure()
-	l1, l2 = plt.plot(hyper_para_list, train_result_list, 'ro', hyper_para_list, test_result_list, 'bs')
+	l1, l2 = plt.plot(hyper_para_list, train_result_list, 'ro-', hyper_para_list, test_result_list, 'bs-')
 	plt.xlabel(hyperparameter)
 	plt.ylabel(result)
 	if log:
 		plt.xscale('log')
-	plt.title("Parameter Estimation for " + hyperparameter)
+	fixedtitle = "Estimation for " + hyperparameter + ", "
+	for key in fixedparams.keys():
+		fixedtitle = fixedtitle + str(key) + ":" + str(fixedparams[key]) + " "
+	fixedtitle = fixedtitle + "(" + gridsearchcv.cv_type + ")"
+	plt.title(fixedtitle)
 	fig.legend((l1, l2), ('Training', 'Validation'), loc='upper right')
+	
+	plt.savefig("../data/storage/figures/" + fixedtitle + ".png")
 	plt.show()
 
