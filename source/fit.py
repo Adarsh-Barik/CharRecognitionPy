@@ -90,8 +90,9 @@ def fit(X, y, estimator, cv_results_, best_score_, best_params_, param_grid, cv_
 	shuffled_index = list(range(n))
 	type(shuffled_index)
 	shuffle(shuffled_index)
+	y1 = np.array(y)
 	X_rand = X[shuffled_index, :]
-	y_rand = y[shuffled_index]
+	y_rand = y1[shuffled_index]
 	for params in all_combinations:
 		estimator.set_params(kernel=params[0], C=params[1], degree=params[2], gamma=params[3])
 		cv_results_['params'].append({'kernel': params[0], 'C': params[1], 'degree': params[2], 'gammas': params[3]})

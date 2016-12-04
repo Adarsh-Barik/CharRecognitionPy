@@ -1,0 +1,5 @@
+,mean_test_score,mean_train_score,param_C,param_degree,param_gamma,param_kernel,params,split0test_score,split0train_score,split1test_score,split1train_score,split2test_score,split2train_score,std_test_score,std_train_score
+0,0.32866666666666666,0.8865,1,3,auto,linear,"{'kernel': 'linear', 'C': 1, 'gammas': 'auto', 'degree': 3}",0.325,0.8815,0.335,0.8885,0.326,0.8895,0.0025962936545662076,0.0020548046676563273
+1,0.27,0.9451666666666667,10,3,auto,linear,"{'kernel': 'linear', 'C': 10, 'gammas': 'auto', 'degree': 3}",0.271,0.9395,0.276,0.9465,0.263,0.9495,0.003091206165165237,0.0024190601174530293
+2,0.265,0.9476666666666667,20,3,auto,linear,"{'kernel': 'linear', 'C': 20, 'gammas': 'auto', 'degree': 3}",0.264,0.9425,0.269,0.9475,0.262,0.953,0.0016996731711975965,0.002475808883906344
+3,0.26666666666666666,0.9486666666666667,30,3,auto,linear,"{'kernel': 'linear', 'C': 30, 'gammas': 'auto', 'degree': 3}",0.268,0.9445,0.27,0.948,0.262,0.9535,0.0019626135258506345,0.0021387085061022435

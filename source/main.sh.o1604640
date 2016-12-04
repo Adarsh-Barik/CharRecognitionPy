@@ -1,0 +1,13 @@
+Python 2.7.12 |Anaconda 2.0.1 (64-bit)| (default, Jul  2 2016, 17:42:40) 
+Type "copyright", "credits" or "license" for more information.
+
+IPython 3.2.1 -- An enhanced Interactive Python.
+Anaconda is brought to you by Continuum Analytics.
+Please check out: http://continuum.io/thanks and https://anaconda.org
+?         -> Introduction and overview of IPython's features.
+%quickref -> Quick reference.
+help      -> Python's own help system.
+object?   -> Details about 'object', use 'object??' for extra details.
+
+[0;32mIn [[1;32m1[0;32m]: [0m
+Do you really want to exit ([y]/n)? 
