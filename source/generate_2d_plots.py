@@ -4,7 +4,14 @@ uses GridSearchCV object as main result
 author: mohith, adarsh
 """
 import matplotlib.pyplot as plt
+<<<<<<< HEAD
 # from cross_validation_cl import CrossValidation
+||||||| merged common ancestors
+from cross_validation_cl import CrossValidation
+import pandas
+=======
+from cross_validation_cl import CrossValidation
+>>>>>>> 3bd080c5e0bafabf70b3c3f883100e2ecd59ed78
 
 
 def check_fix_params(fixedparams, myparams):
