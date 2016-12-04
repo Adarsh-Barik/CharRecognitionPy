@@ -50,10 +50,10 @@ def generate_2d_plots(gridsearchcv, out_dir, fixedparams={'kernel': 'rbf'}, hype
 	plt.ylabel(result)
 	if log:
 		plt.xscale('log')
-	fixedtitle = "Estimation for " + hyperparameter + ", "
+	fixedtitle =  hyperparameter + "_"
 	for key in fixedparams.keys():
-		fixedtitle = fixedtitle + str(key) + ":" + str(fixedparams[key]) + " "
-	fixedtitle = fixedtitle + "(" + gridsearchcv.cv_type + ")"
+		fixedtitle = fixedtitle + str(key) + "_" + str(fixedparams[key]) + "_"
+	fixedtitle = fixedtitle + "_" + gridsearchcv.cv_type + "_"
 	plt.title(fixedtitle)
 	fig.legend((l1, l2), ('Training', 'Validation'), loc='upper right')
 	
