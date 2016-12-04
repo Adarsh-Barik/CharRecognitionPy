@@ -15,7 +15,8 @@ class CrossValidation():
 		self.best_params_ = None
 
 	def fit(self, X, y):
-		fit.fit(X, y, self.estimator, self.cv_results_, self.best_score_, self.best_params_, self.param_grid, self.cv_n, self.cv_type)
+		fit.fit(X, y, self.estimator, self.cv_results_, self.best_score_, self.best_params_, 
+			self.param_grid, self.cv_n, self.cv_type)
 		best_index = self.cv_results_['mean_test_score'].index(max(self.cv_results_['mean_test_score']))
 		self.best_score_ = max(self.cv_results_['mean_test_score'])
 		self.best_params_ = self.cv_results_['params'][best_index]

@@ -5,6 +5,7 @@ author: mohith, adarsh
 """
 import matplotlib.pyplot as plt
 from cross_validation_cl import CrossValidation
+import pandas
 
 
 def check_fix_params(fixedparams, myparams):
@@ -16,7 +17,7 @@ def check_fix_params(fixedparams, myparams):
 
 def generate_2d_plots(gridsearchcv, out_dir, fixedparams={'kernel': 'rbf'}, hyperparameter='C', result='accuracy', log=False):
 	if type(gridsearchcv) != CrossValidation:
-		print("Please provide a valid GridSearchCV object.")
+		print("Please provide a valid CrossValidation object.")
 		return
 	if result == 'accuracy':
 		trainresult = 'mean_train_score'
@@ -49,16 +50,37 @@ def generate_2d_plots(gridsearchcv, out_dir, fixedparams={'kernel': 'rbf'}, hype
 	plt.ylabel(result)
 	if log:
 		plt.xscale('log')
-	fixedtitle = "Estimation for " + hyperparameter + ", "
+	fixedtitle =  hyperparameter + "_"
 	for key in fixedparams.keys():
-		fixedtitle = fixedtitle + str(key) + ":" + str(fixedparams[key]) + " "
-	fixedtitle = fixedtitle + "(" + gridsearchcv.cv_type + ")"
+		fixedtitle = fixedtitle + str(key) + "_" + str(fixedparams[key]) + "_"
+	fixedtitle = fixedtitle + "_" + gridsearchcv.cv_type + "_"
 	plt.title(fixedtitle)
-	fig.legend((l1, l2), ('Training', 'Testing'), loc='upper left')
-
+	fig.legend((l1, l2), ('Training', 'Validation'), loc='upper right')
+	
 	plt.savefig(out_dir + fixedtitle + ".png")
 	plt.show()
 
-
-def plot_all_graphs(clf, output_dir):
-	pass
+def plot_all_graphs(gridsearchcv,out_dir):
+	degree = list(set(gridsearchcv.cv_results_['param_degree']))
+	gamma = list(set(gridsearchcv.cv_results_['param_gamma']))
+	C = list(set(gridsearchcv.cv_results_['param_C']))
+	kernels = list(set(gridsearchcv.cv_results_['param_kernel']))
+	for kernel in kernels:
+		if kernel == 'poly':
+			for d in degree:
+				fixedparams = {'kernel':kernel,'degree':d}
+				generate_2d_plots(gridsearchcv,out_dir, fixedparams=fixedparams,hyperparameter = 'C')
+			for hyp in C:
+				fixedparams = {'kernel':kernel,'C':hyp}
+				generate_2d_plots(gridsearchcv, out_dir,fixedparams=fixedparams,hyperparameter = 'degree')
+		
+		if kernel == 'rbf':
+			for g in gammas:
+				fixedparams = {'kernel':kernel,'degree':g}
+				generate_2d_plots(gridsearchcv, out_dir, fixedparams=fixedparams,hyperparameter = 'C',log=True)
+			for hyp in C:
+				fixedparams = {'kernel':kernel,'C':hyp}
+				generate_2d_plots(gridsearchcv, out_dir, fixedparams=fixedparams,hyperparameter = 'gammas',log=True)
+	
+		if kernel == 'linear'
+			generate_2d_plots(gridsearchcv, out_dir, fixedparams={'kernel'='linear'},hyperparameter = 'C')
