@@ -5,7 +5,6 @@ author: mohith, adarsh
 """
 import matplotlib.pyplot as plt
 from cross_validation_cl import CrossValidation
-import pandas
 
 
 def check_fix_params(fixedparams, myparams):

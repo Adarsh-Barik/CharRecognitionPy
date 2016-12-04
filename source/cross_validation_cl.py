@@ -1,6 +1,12 @@
 import fit
 from sklearn.svm import SVC
 from generate_2d_plots import plot_all_graphs
+import pandas
+from sys import version_info
+if version_info < (3, 0):
+	import cPickle as pickle
+else:
+	import pickle as pickle
 
 
 class CrossValidation():
@@ -22,20 +28,44 @@ class CrossValidation():
 		self.best_params_ = self.cv_results_['params'][best_index]
 
 
+def store_cv_object(cvobj, out_pickle_file, out_csv_file):
+	pickle.dump(cvobj, open(out_pickle_file, 'wb'))
+	df = pandas.DataFrame(cvobj.cv_results_)
+	df.to_csv(out_csv_file)
+
+	
 def start_cross_validation(image_vectors, image_labels, out_dir, cv_type='kfold', cv_n=3, param_lin=None, param_poly=None, param_rbf=None, svm_type=None):
 	svr = SVC(decision_function_shape=svm_type)
 
 	if param_lin:
 		clf_lin = CrossValidation(svr, param_lin, cv_type=cv_type, cv_n=cv_n)
 		clf_lin.fit(image_vectors, image_labels)
+		if svm_type == None:
+			svt = ""
+		out_p = out_dir + "clf_lin_" + cv_type + str(cv_n) + svt + ".p"  
+		out_csv = out_dir + "clf_lin_" + cv_type + str(cv_n) + svt + ".csv"  
+		store_cv_object(clf_lin, out_p, out_csv)
 		plot_all_graphs(clf_lin, out_dir)
 
 	if param_poly:
 		clf_poly = CrossValidation(svr, param_poly, cv_type=cv_type, cv_n=cv_n)
 		clf_poly.fit(image_vectors, image_labels)
+		if svm_type == None:
+			svt = ""
+		out_p = out_dir + "clf_poly_" + cv_type + str(cv_n) + svt + ".p"  
+		out_csv = out_dir + "clf_poly_" + cv_type + str(cv_n) + svt + ".csv"  
+		store_cv_object(clf_poly, out_p, out_csv)
 		plot_all_graphs(clf_poly, out_dir)
 
 	if param_rbf:
 		clf_rbf = CrossValidation(svr, param_rbf, cv_type=cv_type, cv_n=cv_n)
 		clf_lin.fit(image_vectors, image_labels)
+		if svm_type == None:
+			svt = ""
+		out_p = out_dir + "clf_rbf_" + cv_type + str(cv_n) + svt + ".p"  
+		out_csv = out_dir + "clf_rbf_" + cv_type + str(cv_n) + svt + ".csv"  
+		store_cv_object(clf_rbf, out_p, out_csv)
 		plot_all_graphs(clf_rbf, out_dir)
+
+
+
