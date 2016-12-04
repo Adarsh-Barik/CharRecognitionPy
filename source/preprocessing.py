@@ -182,8 +182,15 @@ def preprocess():
 		image_vectors = get_image_vectors(numsamples, allnumdescriptors, labels, load_image_vectors)
 		print ("Done.")
 
-		print ("### Preprocessing finished. ###")
-		return image_vectors, image_labels, allimagenames
+	else:
+		print ("Loading variables from text files...")
+		image_vectors = np.genfromtxt("../data/storage/image_vectors.txt")
+		image_labels = np.genfromtxt("../data/storage/image_labels.txt", dtype='U')
+		allimagenames = np.genfromtxt("../data/storage/image_names.txt")
+		print ("Done.")
+
+	print ("### Preprocessing finished. ###")
+	return image_vectors, image_labels, allimagenames
 
 
 if __name__ == '__main__':

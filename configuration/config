@@ -31,9 +31,9 @@ STORAGE_DIR = ../data/storage/
 # load pre-generated SIFT keys from text files
 LOAD_KEYS_FROM_FILE = True
 # load pre-generated SIFT descriptors from text files
-LOAD_DESCRIPTORS_FROM_FILE = True
+LOAD_DESCRIPTORS_FROM_FILE = False
 # load pre-generated bag of words
-LOAD_BAG_OF_WORDS = True
+LOAD_BAG_OF_WORDS = False
 # load pre-generated image labels
 LOAD_IMAGE_LABELS = False
 # load pre-generated image vectors

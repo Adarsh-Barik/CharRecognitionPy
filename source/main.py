@@ -229,17 +229,20 @@ print ("Starting Cross Validation...")
 print ("CV for linear kernel")
 parameters_lin = {'kernel': ['linear'], 'C': [1, 10, 20, 30]}
 svr = svm.SVC()
-clf_lin = CrossValidation(svr, parameters_lin, cv_n=3)
+#clf_lin = CrossValidation(svr, parameters_lin, cv_n=3)
+clf_lin = CrossValidation(svr,parameters_lin,cv_type='bootstrap',cv_n=3)
 clf_lin.fit(all_image_vectors, all_image_labels)
 
 print ("CV for poly kernel")
 parameters_poly = {'kernel': ['poly'], 'C': [1, 10, 20, 30], 'degree': [2, 3, 5]}
-clf_poly = CrossValidation(svr, parameters_poly, cv_n=3)
+#clf_poly = CrossValidation(svr, parameters_poly, cv_n=3)
+clf_poly = CrossValidation(svr,parameters_poly,cv_type='bootstrap',cv_n=3)
 clf_poly.fit(all_image_vectors, all_image_labels)
 
 print ("CV for rbf kernel")
 parameters_rbf = {'kernel': ['rbf'], 'C': [1, 10, 20, 30], 'gamma': [0.000001, 0.0001, 0.1, 1]}
-clf_rbf = CrossValidation(svr, parameters_rbf, cv_n=3)
+#clf_rbf = CrossValidation(svr, parameters_rbf, cv_n=3)
+clf_rbf = CrossValidation(svr,parameters_rbf,cv_type='bootstrap',cv_n=3)
 clf_rbf.fit(all_image_vectors, all_image_labels)
 
 print ("Done.")

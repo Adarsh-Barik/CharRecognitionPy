@@ -81,13 +81,13 @@ def fit(X, y, estimator, cv_results_, best_score_, best_params_, param_grid, cv_
 	for i in range(cv_n):
 		cv_results_['split' + str(i) + 'test_score'] = []
 		cv_results_['split' + str(i) + 'train_score'] = []
-	cv_results_['mean_train_score'] = []
-	cv_results_['mean_test_score'] = []
+	cv_results_['std_train_score'] = []
+	cv_results_['std_test_score'] = []
 	all_combinations = get_all_param_combinations(param_grid)
 
 	n = len(X)
 	N = range(n)
-	shuffled_index = list(range(n))	
+	shuffled_index = list(range(n))
 	type(shuffled_index)
 	shuffle(shuffled_index)
 	X_rand = X[shuffled_index, :]
@@ -112,3 +112,11 @@ def fit(X, y, estimator, cv_results_, best_score_, best_params_, param_grid, cv_
 			cv_results_['mean_test_score'][i] += cv_results_['split' + str(j) + 'test_score'][i]
 		cv_results_['mean_train_score'][i] /= cv_n * 1.0
 		cv_results_['mean_test_score'][i] /= cv_n * 1.0
+	for i in range(len(cv_results_['params'])):
+		cv_results_['std_train_score'].append(0)
+		cv_results_['std_test_score'].append(0)
+		for j in range(cv_n):
+			cv_results_['std_train_score'][i] += (cv_results_['split' + str(j) + 'train_score'][i] - cv_results_['mean_train_score'][i]) ** 2
+			cv_results_['std_test_score'][i] += (cv_results_['split' + str(j) + 'test_score'][i] - cv_results_['mean_test_score'][i]) ** 2
+		cv_results_['std_train_score'][i] = np.sqrt(cv_results_['std_train_score'][i]) / cv_n * 1.0
+		cv_results_['std_test_score'][i] = np.sqrt(cv_results_['std_test_score'][i]) / cv_n * 1.0

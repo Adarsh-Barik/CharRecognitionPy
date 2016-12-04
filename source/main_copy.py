@@ -6,15 +6,26 @@ Discussion: https://docs.google.com/document/d/1Ccrn5BP424HiEsqlq86opxBvWaF_ki8T
 author: mohith, adarsh
 """
 from preprocessing import preprocess
-from sklearn import svm
-from cross_validation_cl import CrossValidation
+from cross_validation_cl import start_cross_validation
+from effect_of_sample_size import effect_of_sample_size
 
 
 # generate image vectors and corresponding labels
 image_vectors, image_labels, image_names = preprocess()
 
-# start cross validation
-parameters = {'kernel': ['linear', 'rbf'], 'C': [1, 10, 20, 30, 50], 'gamma': [0.00001, 0.0001, 0.001, 0.01, 0.1, 1]}
-svr = svm.SVC()
-clf = CrossValidation(svr, parameters, cv_n=10)
-clf.fit(image_vectors, image_labels)
+# parameters to test for
+parameters_lin = {'kernel': ['linear'], 'C': [1, 10, 20, 30]}
+parameters_poly = {'kernel': ['poly'], 'C': [1, 10, 20, 30], 'degree': [2, 3, 5]}
+parameters_rbf = {'kernel': ['rbf'], 'C': [1, 10, 20, 30], 'gamma': [0.000001, 0.0001, 0.1, 1]}
+
+# start cross validation: default svm type - one-vs-one
+# kfold: cv_n=3 (default)
+start_cross_validation(image_vectors, image_labels, "../data/storage/", param_lin=parameters_lin, param_poly=parameters_poly, param_rbf=parameters_rbf)
+# bootstrap: cv_n=3 (default)
+start_cross_validation(image_vectors, image_labels, "../data/storage/", param_lin=parameters_lin, param_poly=parameters_poly, param_rbf=parameters_rbf, cv_type='bootstrap')
+
+# effect of changing svm type to one-vs-rest, kfold
+start_cross_validation(image_vectors, image_labels, "../data/storage/ovr/", param_lin=parameters_lin, param_poly=parameters_poly, param_rbf=parameters_rbf, svm_type='ovr')
+
+# effect of changing sample size
+effect_of_sample_size(image_vectors, image_labels, "../data/storage/samplesize/", n_range=[50, 100, 500, 1000, 2000, 3000, 4000, 5000, 6000], param_lin=parameters_lin, param_poly=parameters_poly, param_rbf=parameters_rbf)
