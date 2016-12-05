@@ -6,7 +6,7 @@
 !/data/trainLabels.csv
 !/data/testLabels.csv
 !/data/storage
-!/data/storage/**/*.p
+/data/storage/**/*.p
 /data/storage/alldescriptors.txt
 /source/Backup
 /data/storage/alltestdescriptors.txt
