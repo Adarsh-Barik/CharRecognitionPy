@@ -54,7 +54,7 @@ def generate_2d_plots(gridsearchcv, out_dir, fixedparams={'kernel': 'rbf'}, hype
 		fixedtitle = fixedtitle + str(key) + "_" + str(fixedparams[key]) + "_"
 	fixedtitle = fixedtitle + "_" + gridsearchcv.cv_type + "_"
 	plt.title(fixedtitle)
-	fig.legend((l1, l2), ('Training', 'Validation'), loc='upper right')
+	fig.legend((l1, l2), ('Training', 'Testing'), loc='upper left')
 	
 	plt.savefig(out_dir + fixedtitle + ".png")
 	# plt.show()
@@ -74,9 +74,9 @@ def plot_all_graphs(gridsearchcv,out_dir):
 				generate_2d_plots(gridsearchcv, out_dir,fixedparams=fixedparams,hyperparameter = 'degree')
 		
 		if kernel == 'rbf':
-			for g in gammas:
-				fixedparams = {'kernel':kernel,'degree':g}
-				generate_2d_plots(gridsearchcv, out_dir, fixedparams=fixedparams,hyperparameter = 'C',log=True)
+			for g in gamma:
+				fixedparams = {'kernel':kernel,'gammas':g}
+				generate_2d_plots(gridsearchcv, out_dir, fixedparams=fixedparams,hyperparameter = 'C')
 			for hyp in C:
 				fixedparams = {'kernel':kernel,'C':hyp}
 				generate_2d_plots(gridsearchcv, out_dir, fixedparams=fixedparams,hyperparameter = 'gammas',log=True)
