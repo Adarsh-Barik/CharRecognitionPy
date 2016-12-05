@@ -4,8 +4,7 @@ uses GridSearchCV object as main result
 author: mohith, adarsh
 """
 import matplotlib.pyplot as plt
-from cross_validation_cl import CrossValidation
-import pandas
+# from cross_validation_cl import CrossValidation
 
 
 def check_fix_params(fixedparams, myparams):
@@ -16,9 +15,9 @@ def check_fix_params(fixedparams, myparams):
 
 
 def generate_2d_plots(gridsearchcv, out_dir, fixedparams={'kernel': 'rbf'}, hyperparameter='C', result='accuracy', log=False):
-	if type(gridsearchcv) != CrossValidation:
-		print("Please provide a valid CrossValidation object.")
-		return
+	#if type(gridsearchcv) != CrossValidation:
+	#	print("Please provide a valid CrossValidation object.")
+	#	return
 	if result == 'accuracy':
 		trainresult = 'mean_train_score'
 		testresult = 'mean_test_score'
@@ -58,7 +57,7 @@ def generate_2d_plots(gridsearchcv, out_dir, fixedparams={'kernel': 'rbf'}, hype
 	fig.legend((l1, l2), ('Training', 'Validation'), loc='upper right')
 	
 	plt.savefig(out_dir + fixedtitle + ".png")
-	plt.show()
+	# plt.show()
 
 def plot_all_graphs(gridsearchcv,out_dir):
 	degree = list(set(gridsearchcv.cv_results_['param_degree']))
@@ -82,5 +81,5 @@ def plot_all_graphs(gridsearchcv,out_dir):
 				fixedparams = {'kernel':kernel,'C':hyp}
 				generate_2d_plots(gridsearchcv, out_dir, fixedparams=fixedparams,hyperparameter = 'gammas',log=True)
 	
-		if kernel == 'linear'
-			generate_2d_plots(gridsearchcv, out_dir, fixedparams={'kernel'='linear'},hyperparameter = 'C')
+		if kernel == 'linear':
+			generate_2d_plots(gridsearchcv, out_dir, fixedparams={'kernel':'linear'},hyperparameter = 'C')
