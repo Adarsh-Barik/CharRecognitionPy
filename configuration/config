@@ -44,4 +44,6 @@ LOAD_SVM_MODEL = False
 
 # configuration to test unlabelled data set
 [TEST_CONFIG]
-TEST_CSV = ../data/testLabels.csv
+TEST_CSV = ../data/test/testLabels.csv
+TEST_DIR = ../data/test/
+NUM_SAMPLES = 100
