@@ -40,3 +40,8 @@ LOAD_IMAGE_LABELS = False
 LOAD_IMAGE_VECTORS = False
 # load pre-generated SVM model
 LOAD_SVM_MODEL = False
+
+
+# configuration to test unlabelled data set
+[TEST_CONFIG]
+TEST_CSV = ../data/testLabels.csv

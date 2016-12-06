@@ -48,8 +48,8 @@ def start_cross_validation(image_vectors, image_labels, out_dir, cv_type='kfold'
 			svt = ""
 		else:
 			svt = svm_type
-		out_p = out_dir + "clf_lin_" + cv_type + str(cv_n) + svt + ".p"  
-		out_csv = out_dir + "clf_lin_" + cv_type + str(cv_n) + svt + ".csv"  
+		out_p = out_dir + "clf_lin_" + cv_type + str(cv_n) + svt + ".p"
+		out_csv = out_dir + "clf_lin_" + cv_type + str(cv_n) + svt + ".csv"
 		store_cv_object(clf_lin, out_p, out_csv)
 		plot_all_graphs(clf_lin, out_dir)
 
@@ -59,12 +59,11 @@ def start_cross_validation(image_vectors, image_labels, out_dir, cv_type='kfold'
 		clf_poly.fit(image_vectors, image_labels)
 		if svm_type == None:
 			svt = ""
-		
 		else:
 			svt = svm_type
 
-		out_p = out_dir + "clf_poly_" + cv_type + str(cv_n) + svt + ".p"  
-		out_csv = out_dir + "clf_poly_" + cv_type + str(cv_n) + svt + ".csv"  
+		out_p = out_dir + "clf_poly_" + cv_type + str(cv_n) + svt + ".p"
+		out_csv = out_dir + "clf_poly_" + cv_type + str(cv_n) + svt + ".csv"
 		store_cv_object(clf_poly, out_p, out_csv)
 		plot_all_graphs(clf_poly, out_dir)
 
@@ -76,11 +75,8 @@ def start_cross_validation(image_vectors, image_labels, out_dir, cv_type='kfold'
 			svt = ""
 		else:
 			svt = svm_type
-		out_p = out_dir + "clf_rbf_" + cv_type + str(cv_n) + svt + ".p"  
-		out_csv = out_dir + "clf_rbf_" + cv_type + str(cv_n) + svt + ".csv"  
+		out_p = out_dir + "clf_rbf_" + cv_type + str(cv_n) + svt + ".p"
+		out_csv = out_dir + "clf_rbf_" + cv_type + str(cv_n) + svt + ".csv"
 		store_cv_object(clf_rbf, out_p, out_csv)
 		plot_all_graphs(clf_rbf, out_dir)
 	print ("Done.")
-
-
-
