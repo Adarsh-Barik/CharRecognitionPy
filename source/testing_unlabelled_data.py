@@ -8,6 +8,7 @@ from preprocessing import check_config_file, bmp_to_key, generate_descriptors, g
 import numpy as np
 from sklearn.cluster import KMeans
 from sklearn.svm import SVC
+from os import listdir
 
 
 print ("### Testing started ###")
@@ -26,9 +27,15 @@ test_data = np.genfromtxt(test_csv, delimiter=',', dtype="|S5")
 test_files = test_data[:, 0]
 
 for file in test_files:
-	imagename = '../data/testResized/' + file
-	outkey = test_dir + 'keys/' + imagename + '.key'
+	imagename = '../data/testResized/' + file.decode('UTF-8') + '.Bmp'
+	outkey = test_dir + 'keys/' + file.decode('UTF-8') + '.Bmp.key'
+	print (imagename, outkey)
 	bmp_to_key(imagename, outkey)
+
+for file in listdir(test_dir + 'keys/'):
+	f = open(test_dir + 'keys/' + file, 'r')
+
+
 print ("Generating test descriptors...")
 alltestdescriptors, alltestimagenames, alltestnumdescriptors = generate_descriptors(test_dir + 'keys/', False)
 print ("Done.")
@@ -39,7 +46,7 @@ print ("Done.")
 
 print ("Generating bag of words...")
 num_cluster_centers = int(config.get('RUNTIME_CONFIG', 'NUM_OF_WORDS'))
-kmeans = KMeans(num_cluster_centers, alldescriptors)
+kmeans = KMeans(num_cluster_centers).fit(alldescriptors)
 print ("Done.")
 
 print ("Matching bag of words with test descriptors...")
