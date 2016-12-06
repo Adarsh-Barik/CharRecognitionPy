@@ -3,7 +3,6 @@ if version_info < (3, 0):
 	import ConfigParser
 else:
 	import configparser as ConfigParser
- 
 from preprocessing import key_to_descriptor_array, check_config_file, bmp_to_key, generate_descriptors, get_image_vectors, preprocess
 import numpy as np
 from sklearn.cluster import KMeans
@@ -93,7 +92,7 @@ train_image_vectors, train_image_labels, image_names = preprocess()
 print ("Done.")
 # bootstrap optimum model C=20, gamma=0.1, kernel=rbf
 print ("Training SVM...")
-clf = SVC(C=20, gamma=0.1)
+clf = SVC(C=1, gamma=0.1)
 clf.fit(train_image_vectors, train_image_labels)
 print ("Done.")
 
