@@ -23,4 +23,4 @@ for file in listdir('../data/storage/'):
 
 		clf = myclf(cv_results_, cv_type)
 		# print (clf.cv_results_)
-		plot_all_graphs(clf, '../data/storage/figures/')
+		# plot_all_graphs(clf, '../data/storage/figures/')
