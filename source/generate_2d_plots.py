@@ -74,8 +74,8 @@ def plot_all_graphs(gridsearchcv,out_dir):
 				generate_2d_plots(gridsearchcv, out_dir,fixedparams=fixedparams,hyperparameter = 'degree')
 		
 		if kernel == 'rbf':
-			for g in gammas:
-				fixedparams = {'kernel':kernel,'degree':g}
+			for g in gamma:
+				fixedparams = {'kernel':kernel,'gamma':g}
 				generate_2d_plots(gridsearchcv, out_dir, fixedparams=fixedparams,hyperparameter = 'C',log=True)
 			for hyp in C:
 				fixedparams = {'kernel':kernel,'C':hyp}
