@@ -4,7 +4,7 @@
 !/data/testResized
 !/data/testResizedKeys
 !/data/trainLabels.csv
-!/data/testLabels.csv
+!/data/test
 !/data/storage
 /data/storage/**/*.p
 /data/storage/alldescriptors.txt

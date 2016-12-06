@@ -4,14 +4,7 @@ uses GridSearchCV object as main result
 author: mohith, adarsh
 """
 import matplotlib.pyplot as plt
-<<<<<<< HEAD
-from cross_validation_cl import CrossValidation
-||||||| merged common ancestors
-from sklearn.model_selection._search import GridSearchCV
-=======
-from cross_validation_cl import CrossValidation
-import pandas
->>>>>>> de73bbcc7de98a1c2963bfe0486df816fcd17883
+# from cross_validation_cl import CrossValidation
 
 
 def check_fix_params(fixedparams, myparams):
@@ -21,20 +14,10 @@ def check_fix_params(fixedparams, myparams):
 	return True
 
 
-<<<<<<< HEAD
 def generate_2d_plots(gridsearchcv, out_dir, fixedparams={'kernel': 'rbf'}, hyperparameter='C', result='accuracy', log=False):
-	if type(gridsearchcv) != CrossValidation:
-		print("Please provide a valid GridSearchCV object.")
-||||||| merged common ancestors
-def generate_2d_plots(gridsearchcv, fixedparams={'kernel': 'rbf'}, hyperparameter='C', result='accuracy', log=False):
-	if type(gridsearchcv) != GridSearchCV:
-		print("Please provide a valid GridSearchCV object.")
-=======
-def generate_2d_plots(gridsearchcv, out_dir, fixedparams={'kernel': 'rbf'}, hyperparameter='C', result='accuracy', log=False):
-	if type(gridsearchcv) != CrossValidation:
-		print("Please provide a valid CrossValidation object.")
->>>>>>> de73bbcc7de98a1c2963bfe0486df816fcd17883
-		return
+	# if type(gridsearchcv) != CrossValidation:
+	#	print("Please provide a valid CrossValidation object.")
+	#	return
 	if result == 'accuracy':
 		trainresult = 'mean_train_score'
 		testresult = 'mean_test_score'
@@ -66,37 +49,17 @@ def generate_2d_plots(gridsearchcv, out_dir, fixedparams={'kernel': 'rbf'}, hype
 	plt.ylabel(result)
 	if log:
 		plt.xscale('log')
-<<<<<<< HEAD
-	fixedtitle = "Estimation for " + hyperparameter + ", "
-	for key in fixedparams.keys():
-		fixedtitle = fixedtitle + str(key) + ":" + str(fixedparams[key]) + " "
-	fixedtitle = fixedtitle + "(" + gridsearchcv.cv_type + ")"
-	plt.title(fixedtitle)
-	fig.legend((l1, l2), ('Training', 'Testing'), loc='upper left')
-
-	plt.savefig(out_dir + fixedtitle + ".png")
-||||||| merged common ancestors
-	plt.title("Parameter Estimation for " + hyperparameter)
-	fig.legend((l1, l2), ('Training', 'Validation'), loc='upper right')
-=======
-	fixedtitle =  hyperparameter + "_"
+	fixedtitle = hyperparameter + "_"
 	for key in fixedparams.keys():
 		fixedtitle = fixedtitle + str(key) + "_" + str(fixedparams[key]) + "_"
 	fixedtitle = fixedtitle + "_" + gridsearchcv.cv_type + "_"
 	plt.title(fixedtitle)
-	fig.legend((l1, l2), ('Training', 'Validation'), loc='upper right')
-	
+	fig.legend((l1, l2), ('Training', 'Testing'), loc='upper left')
 	plt.savefig(out_dir + fixedtitle + ".png")
->>>>>>> de73bbcc7de98a1c2963bfe0486df816fcd17883
-	plt.show()
+	# plt.show()
 
-<<<<<<< HEAD
 
-def plot_all_graphs(clf, output_dir):
-	pass
-||||||| merged common ancestors
-=======
-def plot_all_graphs(gridsearchcv,out_dir):
+def plot_all_graphs(gridsearchcv, out_dir):
 	degree = list(set(gridsearchcv.cv_results_['param_degree']))
 	gamma = list(set(gridsearchcv.cv_results_['param_gamma']))
 	C = list(set(gridsearchcv.cv_results_['param_C']))
@@ -104,20 +67,29 @@ def plot_all_graphs(gridsearchcv,out_dir):
 	for kernel in kernels:
 		if kernel == 'poly':
 			for d in degree:
-				fixedparams = {'kernel':kernel,'degree':d}
-				generate_2d_plots(gridsearchcv,out_dir, fixedparams=fixedparams,hyperparameter = 'C')
+				fixedparams = {'kernel': kernel, 'degree': d}
+				generate_2d_plots(gridsearchcv, out_dir, fixedparams=fixedparams, hyperparameter='C')
 			for hyp in C:
-				fixedparams = {'kernel':kernel,'C':hyp}
-				generate_2d_plots(gridsearchcv, out_dir,fixedparams=fixedparams,hyperparameter = 'degree')
-		
+				fixedparams = {'kernel': kernel, 'C': hyp}
+				generate_2d_plots(gridsearchcv, out_dir, fixedparams=fixedparams, hyperparameter='degree')
+
 		if kernel == 'rbf':
+<<<<<<< HEAD
+			for g in gamma:
+				fixedparams = {'kernel':kernel,'gamma':g}
+				generate_2d_plots(gridsearchcv, out_dir, fixedparams=fixedparams,hyperparameter = 'C',log=True)
+||||||| merged common ancestors
 			for g in gammas:
 				fixedparams = {'kernel':kernel,'degree':g}
 				generate_2d_plots(gridsearchcv, out_dir, fixedparams=fixedparams,hyperparameter = 'C',log=True)
+=======
+			for g in gamma:
+				fixedparams = {'kernel': kernel, 'gammas': g}
+				generate_2d_plots(gridsearchcv, out_dir, fixedparams=fixedparams, hyperparameter='C')
+>>>>>>> 770dbd767452118b2b9f3002804ede5793aababd
 			for hyp in C:
-				fixedparams = {'kernel':kernel,'C':hyp}
-				generate_2d_plots(gridsearchcv, out_dir, fixedparams=fixedparams,hyperparameter = 'gammas',log=True)
-	
-		if kernel == 'linear'
-			generate_2d_plots(gridsearchcv, out_dir, fixedparams={'kernel'='linear'},hyperparameter = 'C')
->>>>>>> de73bbcc7de98a1c2963bfe0486df816fcd17883
+				fixedparams = {'kernel': kernel, 'C': hyp}
+				generate_2d_plots(gridsearchcv, out_dir, fixedparams=fixedparams, hyperparameter='gammas', log=True)
+
+		if kernel == 'linear':
+			generate_2d_plots(gridsearchcv, out_dir, fixedparams={'kernel': 'linear'}, hyperparameter='C')
