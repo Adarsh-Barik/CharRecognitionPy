@@ -68,3 +68,20 @@ Please make sure that you have correct version of sklearn and skimage installed.
 ├── report
 ├── source
 
+configuration - folder containing the config file for configuring the initial settings and parameters
+data - folder containing all the data,both existing and generated.
+storage - folder in data containing the data generated from the program i.e. plots, csvs etc.
+figures - folder in storage containing the plots and csv's of bootstrap and kfold cross validation (one vs one)
+ovr - the folder in storage contains the one vs rest analysis plots and csvs for kfold cross validation
+samplesize ,_100,_500 etc. - folder in storage containing the analysis of varying sample sizes across kernels, plots and csvs
+test - folder in data containing the 100 resized keys used for testing for unlabelled data
+testResized - folder in data containing all the test resized images
+testResizedKeys - folder in data containing all the test resized keys
+trainResized - folder in data containing all the train resized data images
+trainResizedKeys - folder in data containing all the train resized keys
+report - final report for project in pdf format
+source - folder containing all the code necessary to perform image processing, generate bag of words, run the model and perform cross validation
+
+## How to Run the Code
+
+## How to Improve Running Time
