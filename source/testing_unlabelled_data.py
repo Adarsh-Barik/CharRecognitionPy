@@ -1,8 +1,10 @@
 from sys import version_info
 if version_info < (3, 0):
 	import ConfigParser
+	import cPickle as pickle
 else:
 	import configparser as ConfigParser
+	import pickle
 from preprocessing import key_to_descriptor_array, check_config_file, bmp_to_key, generate_descriptors, get_image_vectors, preprocess
 import numpy as np
 from sklearn.cluster import KMeans
@@ -40,12 +42,15 @@ num_of_files = len([a for a in listdir(key_dir)])
 alltestimagenames = [0 for i in range(num_of_files)]
 alltestnumdescriptors = np.zeros(num_of_files,)
 i = 0
+test_true_label_dict = dict(zip(test_data[:, 0], test_data[:,1]))
+test_true_label = []
 for filename in listdir(key_dir):
 	name_of_image = path.splitext(filename)[0]
 	outkey = key_dir + "/" + filename
 	mydescriptorarray = key_to_descriptor_array(outkey)
 	num_descriptors = len(mydescriptorarray)
 	alltestimagenames[i] = path.splitext(name_of_image)[0]
+	test_true_label.append(test_true_label_dict[alltestimagenames[i]])
 	alltestnumdescriptors[i] = num_descriptors
 	if i == 0:
 		alltestdescriptorarray = mydescriptorarray
@@ -64,7 +69,7 @@ print ("Done.")
 
 print ("Generating bag of words...")
 num_cluster_centers = int(config.get('RUNTIME_CONFIG', 'NUM_OF_WORDS'))
-kmeans = KMeans(num_cluster_centers).fit(alldescriptors)
+kmeans = pickle.load(open("../data/storage/kmeans_model.p", 'rb'))
 print ("Done.")
 
 print ("Matching bag of words with test descriptors...")
@@ -73,7 +78,6 @@ print ("Done.")
 
 print ("Generating test image vectors...")
 num_test_samples = int(config.get('TEST_CONFIG', 'NUM_SAMPLES'))
-#test_image_vectors = get_image_vectors(num_test_samples, alltestnumdescriptors, labels, False)
 count = 0
 test_image_vectors = np.zeros((num_test_samples, 310))
 for i in range(num_test_samples):
@@ -92,7 +96,8 @@ train_image_vectors, train_image_labels, image_names = preprocess()
 print ("Done.")
 # bootstrap optimum model C=20, gamma=0.1, kernel=rbf
 print ("Training SVM...")
-clf = SVC(C=1, gamma=0.1)
+clf = SVC(C=20, gamma=0.1)
+#clf.fit(train_image_vectors[0:4189, :], train_image_labels[0:4189])
 clf.fit(train_image_vectors, train_image_labels)
 print ("Done.")
 
