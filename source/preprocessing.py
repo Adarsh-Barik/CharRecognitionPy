@@ -1,12 +1,14 @@
 # author : adarsh
-from sys import exit
+from sys import exit, version_info
 from os import path, listdir, system
-import ConfigParser
+if version_info < (3, 0):
+	import ConfigParser
+else:
+	import configparser as ConfigParser
 import csv
 import numpy as np
 from skimage.io import load_sift
 from sklearn.cluster import KMeans
-from sys import version_info
 if version_info < (3, 0):
 	import cPickle as pickle
 else:
