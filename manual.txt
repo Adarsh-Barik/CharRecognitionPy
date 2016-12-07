@@ -1,0 +1,70 @@
+## About authors
+Adarsh Barik: abarik@purdue.edu
+Mohith Murlidhar: mmurlidh@purdue.edu
+
+## About data set
+(Requires Kaggle login)
+Training images:  https://www.kaggle.com/c/street-view-getting-started-with-julia/download/trainResized.zip
+Training labels: https://www.kaggle.com/c/street-view-getting-started-with-julia/download/trainLabels.csv
+Test images: https://www.kaggle.com/c/street-view-getting-started-with-julia/download/testResized.zip
+
+## About the code
+1. Operating System
+Code is written and tested in Linux oeprating system. More precisely, Ubuntu 16.04 with kernel 4.4.0-47-generic. The code is NOT tested in windows/Mac.
+2. Programing Language 
+Code is written using Python 2.7.12, we have tried to make it compatible with python 3.0+ as well but all our testing has been done on computer running python 2.7.12. This is absolutely important as many of the libraries/modules used in the code depend on python version (also read How to Improve Running Time).
+3. Required Libraries
+sklearn : version 0.18
+skimage : 0.12.3 
+cPickle : (pickle if using python 3+)
+ConfigParser :  (configparser if using python 3+)
+sys
+os
+csv
+numpy
+pandas
+itertools
+random
+matplotlib
+
+To install sklearn use: $ pip install --user -U scikit-learn
+To install skimage use: $ pip install --user -U scikit-image
+Other packages can also be installed using $ pip install --user -U <package_name>
+Please make sure that you have correct version of sklearn and skimage installed. Other packages work at their current stable verison. 
+
+## Directory structure
+.
+├── configuration
+├── data
+│   ├── storage
+│   │   ├── figures
+│   │   ├── ovr
+│   │   │   └── figures
+│   │   ├── samplesize
+│   │   │   ├── _100
+│   │   │   │   └── figures
+│   │   │   ├── _1000
+│   │   │   │   └── figures
+│   │   │   ├── _2000
+│   │   │   │   └── figures
+│   │   │   ├── _3000
+│   │   │   │   └── figures
+│   │   │   ├── _4000
+│   │   │   │   └── figures
+│   │   │   ├── _50
+│   │   │   │   └── figures
+│   │   │   ├── _500
+│   │   │   │   └── figures
+│   │   │   ├── _5000
+│   │   │   │   └── figures
+│   │   │   └── _6000
+│   │   │       └── figures
+│   ├── test
+│   │   └── keys
+│   ├── testResized
+│   ├── testResizedKeys
+│   ├── trainResized
+│   └── trainResizedKeys
+├── report
+├── source
+
