@@ -7,6 +7,7 @@ else:
 	import pickle
 from preprocessing import key_to_descriptor_array, check_config_file, bmp_to_key, generate_descriptors, get_image_vectors, preprocess
 import numpy as np
+import pandas
 from sklearn.cluster import KMeans
 from sklearn.svm import SVC
 from os import listdir, path
@@ -96,7 +97,7 @@ train_image_vectors, train_image_labels, image_names = preprocess()
 print ("Done.")
 # bootstrap optimum model C=20, gamma=0.1, kernel=rbf
 print ("Training SVM...")
-clf = SVC(C=20, gamma=0.1)
+clf = SVC(C=1, gamma=0.1)
 #clf.fit(train_image_vectors[0:4189, :], train_image_labels[0:4189])
 clf.fit(train_image_vectors, train_image_labels)
 print ("Done.")
@@ -105,7 +106,14 @@ print ("Predicting...")
 predicted_labels = clf.predict(test_image_vectors)
 print ("Done.")
 
+train_score = clf.score(train_image_vectors,train_image_labels)
+test_score = clf.score(test_image_vectors,test_true_label)
+print ("The training data accuracy: ",train_score)
+print ("The test data accuracy: ",test_score)
 
+results = {'Test_Image_names':alltestimagenames,'Test_Image_Labels':test_true_label,'Predicted_labels':predicted_labels}
+results_data = pandas.DataFrame(results,columns=['Test_Image_names','Test_Image_Labels','Predicted_labels'])
+results_data.to_csv('../data/storage/unlabelled_results.csv')
 
 
 
