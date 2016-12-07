@@ -68,3 +68,43 @@ Please make sure that you have correct version of sklearn and skimage installed.
 ├── report
 ├── source
 
+## How to Run the Code
+1. All experiements are in the file main.py inside "source" directory which can be run by going to source directory and running the command:
+$ python main.py
+2. Now we'll explain what deos this python script do in more detail. As first step, it calls function preprocess()
+3. preprocess() function is defined in "preprocessing.py" file. It does the following job:
+	i. Converts training images to corresponding vectors
+	ii. Generates bag of words for future reference
+	iii. Returns vectors of images, their labels and corresponding image names
+We STRONGLY recommend to run preprocess() atleast once while running in any new setup. After its first successful run, we can go to "configuration" directory and  edit the "config" file in following way:
+DO_PREPROCESSING = False
+After this change, in the next run preprocess() will load already generated and stored training image vectors, training image labels and corresponding training image names.
+The above is also important as we store some objects as pickle files (<file>.p extension) and these files depend heavily on the version of python, hence they need to be genrated during first run of preprocess() in any new setup.
+4. preprocess() uses "sift" binary inside "source" directory to generate SIFT keys and descriptors and hence it must have execution permission BEFORE the first run of the code. This can be done by going to "source" directory and running the command:
+$ chmod  a+x sift
+5. We define parameters for various kernels in the next few line of code. They have been named "parameters_<kernel_type>" and are "dictionaries" with values of type "list". They can be changed as per the requirement of the experiment. 
+6. If we wish to skip a particular kernel then they can be just defined as:
+parameters_<kernel_type> = None
+7. Next we start the cross validation process by calling function start_cross_validation(image_vectors, image_labels, out_dir, cv_type='kfold', cv_n=3, param_lin=None, param_poly=None, param_rbf=None, svm_type=None)
+8. start_cross_validation(..) is defined in "cross_validation_cl.py" file in "source" directory.
+9. start_cross_validation(..) can run cross validation for various combinations of kernels and parameters and svm type.
+10. On its first call, we run it for cv_type='kfold' (we can skip this argument as by default it runs for kfolds)
+11. On its second call, we run it for cv_type='bootstrap'
+12. On its third call, we run it for svm type one-vs-rest by giving argument svm_type='ovr'
+13. We can specify number of folds/B by giving argument cv_n=<number of folds/ B> , by default it takes value as 3
+14.  It stores the results as csv files in out_dir and generated all possible plots for hyperparameter estimation
+15. At last we call the function effect_of_sample_size(image_vectors, image_labels, out_dir, n_range=[50, 1000, 3000, 6000], param_lin=None, param_poly=None, param_rbf=None) which is defined in the file "effect_of_sample_size.py" in "source" directory.
+16. This function runs the start_cross_validation(..) routine for truncated size of training vectors which can be controlled by argument n_range
+17.  Once we have selected our model, we can test our for unlabelled samples by running following command:
+$ python testing_unlabelled_data.py
+18. This reads unlabelled test image names from a csv files provided in "config" file within "configuration" folder. Check for:
+TEST_CSV = ../data/test/testLabels.csv
+19. It also makes use of stored pickle file to generate bag of words, hence it is important that file "kmeans_model.p" exists (and of correct version) inside directory "data/storage"
+20. It prints the accuracy it achieved in standard output and stores the results in a csv file named "unlabelled_results.csv'" inside directory "data/storage"
+
+## How to Improve Running Time
+1. Change DO_PREPROCESSING to False in "config" files inside "configuration" directory AFTER the first successfull run (read above section to get a detailed explaination for this)
+2. Choose parameters_<kernel_type> based on computational resources available (as a general rule, the less number of parameters to be tested, less the running time)
+3. Comment out the experiements which you don't want to run. For example, we don't need to run start_cross_validation for both kfolds and bootstrap. We can also skip change of svm type
+4. Run effect_of_sample_size(..) only when required. It goes through many loops (loops for sample size, then kernels, then hyperparameters). If not needed then comment it out.
+
