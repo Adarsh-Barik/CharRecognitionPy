@@ -6,7 +6,7 @@
 [RUNTIME_CONFIG]
 
 # whether to generate image vectors again
-DO_PREPROCESSING = False
+DO_PREPROCESSING = True
 # length of image vectors
 NUM_OF_WORDS = 310
 

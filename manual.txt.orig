@@ -68,7 +68,7 @@ Please make sure that you have correct version of sklearn and skimage installed.
 ├── report
 ├── source
 
-
+<<<<<<< HEAD
 configuration - folder containing the config file for configuring the initial settings and parameters
 data - folder containing all the data,both existing and generated.
 storage - folder in data containing the data generated from the program i.e. plots, csvs etc.
@@ -83,6 +83,11 @@ trainResizedKeys - folder in data containing all the train resized keys
 report - final report for project in pdf format
 source - folder containing all the code necessary to perform image processing, generate bag of words, run the model and perform cross validation
 
+## How to Run the Code
+
+## How to Improve Running Time
+||||||| merged common ancestors
+=======
 ## How to Run the Code
 1. All experiements are in the file main.py inside "source" directory which can be run by going to source directory and running the command:
 $ python main.py
@@ -123,3 +128,4 @@ TEST_CSV = ../data/test/testLabels.csv
 3. Comment out the experiements which you don't want to run. For example, we don't need to run start_cross_validation for both kfolds and bootstrap. We can also skip change of svm type
 4. Run effect_of_sample_size(..) only when required. It goes through many loops (loops for sample size, then kernels, then hyperparameters). If not needed then comment it out.
 
+>>>>>>> fd90b74420b0c923c07277ebdf32b584ccbda2ad
