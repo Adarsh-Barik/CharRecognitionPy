@@ -7,5 +7,5 @@ alldescriptors.txt is a large file (~105 MB) hence I have compressed it in allde
 - [x] Generating bag of words 
 - [x] Generating training vectors using K-means clustering
 - [x] Implementing basic multiclass SVM 
-- [ ] Implementing other variants of SVM for classification
-- [ ] Test results
+- [x] Implementing other variants of SVM for classification
+- [x] Test results
